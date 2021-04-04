@@ -2,7 +2,7 @@
 
 Inspired from my terminal color scheme "green on black" , and become an idea to customize my xmonad to Neon concept with dark and light green Color.
 
-[screenshot]
+![screenshot](https://github.com/steven887/dotfiles/blob/main/xmonad-setup/Light/screenshot/ezgif-2-5221d570ec7a.gif)
 
 
 
