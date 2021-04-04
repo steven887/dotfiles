@@ -1,4 +1,4 @@
-<h1 align="center">:sparkles::vertical_traffic_light: My XMonad Customization Setup, I Call it <i >LIGHT</i> :vertical_traffic_light::sparkles:</h1>
+<h1 align="center">:sparkles::vertical_traffic_light: My XMonad Customization Setup,<i>"LIGHT"</i> :vertical_traffic_light::sparkles:</h1>
 
 Inspired from my terminal color scheme "green on black" , and become an idea to customize my xmonad to Neon concept with dark and light green Color.
 
