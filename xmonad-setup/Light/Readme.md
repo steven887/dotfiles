@@ -8,7 +8,7 @@ Inspired from my terminal color scheme "green on black" , and become an idea to 
 
 
 
-## How to Use this Config ?? :thinking: :thinking: ##
+## How to Use and get this setup ?? :thinking: :thinking: ##
 
 
 
