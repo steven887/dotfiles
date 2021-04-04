@@ -12,7 +12,7 @@ Inspired from my terminal color scheme "green on black" , and become an idea to 
 
 
 
-<h3><ins>Prerequisite</ins> :fire: :fire:</h3> 
+<h3>:fire: :fire: <ins>Prerequisite</ins> :fire: :fire:</h3> 
 
 
 - Install Xmonad & Xmobar of course.. :satisfied: :stuck_out_tongue_winking_eye:
