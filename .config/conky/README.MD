@@ -1,4 +1,4 @@
-### My Personal Conky Config for my Neon - Green XMonad Setup  ###
+# My Personal Conky Config for my Neon - Green XMonad Setup  #
 
 Original fork from https://github.com/Vict0rBit 
 
