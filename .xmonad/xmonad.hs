@@ -3,7 +3,7 @@
 --      _____ ___                                                  ##
 --     / ___//   |    # My Personal XMonad Config                  ##
 --     \__ \/ /| |    # Author      : steven Agustinus             ## 
---    ___/ / ___ |    # Find me on  : https://gitlab.com/stevenags ##                            #
+--    ___/ / ___ |    # Find me on  : https://github.com/steven887 ##                            #
 --   /____/_/  |_|                                                 ##
 --                                                                 ## 
 -- ##################################################################
@@ -15,17 +15,17 @@
 --                             CORE                               --
 --------------------------------------------------------------------
 import XMonad
-import Data.Monoid
 import System.Exit
 import qualified XMonad.StackSet as W
 import System.IO (hPutStrLn)
-
 -------------------------------------------------------------------
 ------                          DATA                         ------               
 -------------------------------------------------------------------
 import Data.Maybe (fromJust)
 import Data.Maybe (isJust)
 import qualified Data.Map as M
+import Data.Monoid
+import Data.Ratio
 
 -------------------------------------------------------------------
 ------                        UTILLITIES                     ------               
@@ -33,12 +33,14 @@ import qualified Data.Map as M
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 import XMonad.Util.EZConfig
+import Graphics.X11.ExtraTypes.XF86
 -------------------------------------------------------------------
 ------                          HOOKS                        ------ 
 -------------------------------------------------------------------
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
+import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten,pad, PP(..))
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.ManageHelpers
 
 -------------------------------------------------------------------
 ------                         LAYOUTS                       ------
@@ -98,7 +100,9 @@ altMask = mod1Mask
 
 -- Set your workspaces
 --myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
-myWorkspaces = ["חתא","םיתש","שלש","עברא","שמח","שש","עבש","הנומש","עשת"]
+--myWorkspaces = ["חתא","םיתש","שלש","עברא","שמח","שש","עבש","הנומש","עשת"]
+myWorkspaces = ["一","二","三","四","五","六","七","八","九"]
+--myWorkspaces = [" \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c"]
 
 -----------  make your workspace on xmobar clickable ------------
 myWorkspacesIndices = M.fromList $ zipWith (,) myWorkspaces [1..] 
@@ -117,18 +121,20 @@ clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
 -- this will show the workspace name everytime you move or change to another workspace
 myshowWNameTheme :: SWNConfig
 myshowWNameTheme = def
-  {swn_font         = "xft:MiriamMonoCLM:bold:size=60:antialias=true:hinting=true"
+  {
+  --swn_font         = "xft:MiriamMonoCLM:bold:size=60:antialias=true:hinting=true"
+  swn_font         = "xft:NotoSansCJKSC:bold:size=60:antialias=true:hinting=true"
   ,swn_fade         = 0.7
   ,swn_bgcolor      = "#191c21"
   ,swn_color        = "#23A611"
   }
 
 
-mySpacing' :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
-mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
+mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
+mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
 -- $ spacingRaw True (Border 0 8 8 8) True (Border 8 8 8 8) True 
 
-myLayout = smartBorders $  mouseResize $ windowArrange $ avoidStruts   (
+myLayout =  mouseResize $ windowArrange $ avoidStruts   (
            tall         ||| 
            grid         |||
            mirror       |||
@@ -139,22 +145,23 @@ myLayout = smartBorders $  mouseResize $ windowArrange $ avoidStruts   (
   where 
     tall     = renamed [Replace "Tall"] 
                $ windowNavigation 
-               $ mySpacing' 8 
+               $ mySpacing 8 
+               $ smartBorders
                $ Tall 1 (3/100) (1/2) 
 
     grid     = renamed [Replace "Grid"] 
                $ windowNavigation 
-               $ mySpacing' 8
+               $ mySpacing 8
                $ Grid
 
     mirror   = renamed [Replace "Mirror"]
                $ windowNavigation
-               $ mySpacing' 8
+               $ mySpacing 8
                $ Mirror (Tall 1 (3/100) (3/5))
 
     threeCol = renamed [Replace "ThreeCol"]
                $ windowNavigation
-               $ mySpacing' 8
+               $ mySpacing 8
                $ ThreeCol 1 (3/100) (1/2)
 
 
@@ -174,13 +181,19 @@ windowCount =
 ------                   WINDOW RULES                        ------               
 -------------------------------------------------------------------
 
+-- doRectFloat :: W.RationalRect -> ManageHook
+
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore 
-    , className =? "Pcmanfm"        --> doFloat ]
-
+    , className =? "xdman-Main"        --> doFloat
+    ]
+   <+>composeOne
+   [className =? "Pcmanfm"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
+   --,className =? "xdman-Main"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
+   ]
 -------------------------------------------------------------------
 ------                   EVENT HANDLING                      ------               
 -------------------------------------------------------------------
@@ -202,7 +215,7 @@ myLogHook = return () -- fadeInactiveLogHook fadeAmount
 myStartupHook = do
    spawnOnce "nitrogen --restore &"
    spawnOnce "picom &"
-   spawnOnce "exec /usr/bin/trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 5 --transparent true --alpha 150 --tint 0x000000  --height 20 --monitor 0 --iconspacing 2 &"
+   spawnOnce "exec /usr/bin/trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 5 --transparent true --alpha 55 --tint 0x000000  --height 20 --monitor 0 --iconspacing 2 &"
 
 -------------------------------------------------------------------
 ------                     KEY BINDINGS                      ------               
@@ -218,11 +231,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
    -- launch kitty terminal
     , ((modm .|. shiftMask, xK_Return), spawn myTerminal3)
    
-   -- launch spotify
-    , ((modm,               xK_s     ), spawn "spotify-adblock")
 
    -- launch vscode
-    , ((modm,              xK_v   ), spawn "code")
+    , ((modm,              xK_v  ), spawn "code")
 
    -- launch firefox private
     , ((altMask .|. controlMask   ,       xK_f  ), spawn "firefox --private-window")
@@ -242,8 +253,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
    -- launch dmenu
     , ((modm,               xK_d     ), spawn "dmenu_run")
 
-   -- launch gmrun
-    , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -293,11 +302,37 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
+    ------------------------------- EXTRA KEYS ------------------------------
+    -- Media Player keybindings --
+    -- launch spotify
+    , ((0,      xF86XK_Tools        ), spawn "spotify-adblock")
+
+    -- PlayPause
+    , ((0,      xF86XK_AudioPlay        ), spawn "playerctl play-pause")
+   
+    -- Stop
+    , ((0,      xF86XK_AudioStop        ), spawn "playerctl stop")
+  
+    -- Next
+    , ((0,      xF86XK_AudioNext        ), spawn "playerctl next")
+  
+    -- Previous
+    , ((0,      xF86XK_AudioPrev        ), spawn "playerctl previous")
+
+    -- Volume Key - mute/on
+    ,  ((0, xF86XK_AudioMute             ), spawn "amixer set Master toggle")
+   
+    -- Volume Key - decrease volume 
+    ,  ((0, xF86XK_AudioLowerVolume      ), spawn "amixer set Master 2%-")
+
+    -- Volume Key - increase volume 
+    ,  ((0, xF86XK_AudioRaiseVolume      ), spawn "amixer set Master 2%+")
+    
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
     --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
+     , ((modm .|. controlMask             , xK_t     ), sendMessage ToggleStruts)
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
@@ -356,11 +391,12 @@ main = do
         logHook = dynamicLogWithPP $ def
         {
           ppOutput  = \x ->  hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
-        , ppCurrent = xmobarColor "#71fe00" "" . wrap "[" "]"
-        , ppVisible = xmobarColor "#2ba402" "" . clickable
+        , ppCurrent = xmobarColor "#cbe500" "#078202"  . wrap " "  " " -- "#71fe00" -- . wrap "[" "]"
+        , ppVisible = xmobarColor "#2ba402" "" .  clickable
         , ppHidden  = xmobarColor "#498236" "" . wrap "" "*" . clickable
-        , ppHiddenNoWindows = xmobarColor "#373b41" ""
         , ppTitle   = xmobarColor "#22d964" "" . shorten 50
+        , ppSep     =  "<fc=#666666> | </fc>"
+        , ppHiddenNoWindows = xmobarColor "#373b41" "" . wrap "|" " " 
         , ppExtras  = [windowCount] 
         , ppOrder   = \(ws:l:t:ex) -> [ws, l]++ex++[t]
         }
