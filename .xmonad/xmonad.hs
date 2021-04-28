@@ -41,6 +41,8 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten,pad, PP(..))
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts(..))
 
 -------------------------------------------------------------------
 ------                         LAYOUTS                       ------
@@ -198,7 +200,7 @@ myManageHook = composeAll
 ------                   EVENT HANDLING                      ------               
 -------------------------------------------------------------------
 
-myEventHook = mempty
+--myEventHook = mempty
 
 -------------------------------------------------------------------
 ------                  STATUS BARS & LOGGING                ------               
@@ -387,7 +389,7 @@ main :: IO ()
 main = do
 	xmproc0 <- spawnPipe "xmobar -x 0 /home/steven/.config/xmobar/xmobarrc" 
 	xmproc1 <- spawnPipe "xmobar -x 1 /home/steven/.config/xmobar/xmobarrc2" 
- 	xmonad $ docks  defaults {
+ 	xmonad $  ewmh defaults {
         logHook = dynamicLogWithPP $ def
         {
           ppOutput  = \x ->  hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
@@ -419,8 +421,8 @@ defaults = def {
 
       -- hooks, layouts
         layoutHook         = showWName' myshowWNameTheme $ myLayout,
-        manageHook         = myManageHook,
-        handleEventHook    = myEventHook,
+        manageHook         = myManageHook <+> manageDocks,
+        handleEventHook    = docksEventHook,
         logHook            = myLogHook ,
         startupHook        = myStartupHook
     }
