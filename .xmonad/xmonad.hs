@@ -329,13 +329,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0,      xF86XK_AudioPrev        ), spawn "playerctl previous")
 
     -- Volume Key - mute/on
-    ,  ((0, xF86XK_AudioMute             ), spawn "amixer set Master toggle")
+   -- ,  ((0, xF86XK_AudioMute             ), spawn "amixer set Master toggle")
    
     -- Volume Key - decrease volume 
-    ,  ((0, xF86XK_AudioLowerVolume      ), spawn "amixer set Master 2%-")
+    --,  ((0, xF86XK_AudioLowerVolume      ), spawn "amixer set Master 2%-")
 
     -- Volume Key - increase volume 
-    ,  ((0, xF86XK_AudioRaiseVolume      ), spawn "amixer set Master 2%+")
+    --,  ((0, xF86XK_AudioRaiseVolume      ), spawn "amixer set Master 2%+")
     
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
