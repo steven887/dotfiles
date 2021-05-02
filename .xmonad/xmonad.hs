@@ -137,7 +137,7 @@ mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spaci
 mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
 -- $ spacingRaw True (Border 0 8 8 8) True (Border 8 8 8 8) True 
 
-myLayout = avoidStruts $  mouseResize $ windowArrange    (
+myLayout =  mouseResize $ windowArrange $ avoidStruts   (
            tall         ||| 
            grid         |||
            mirror       |||
@@ -149,7 +149,6 @@ myLayout = avoidStruts $  mouseResize $ windowArrange    (
     tall     = renamed [Replace "Tall"] 
                $ windowNavigation 
                $ mySpacing 8 
-               $ smartBorders
                $ ResizableTall 1 (3/100) (1/2) [] 
 
     grid     = renamed [Replace "Grid"] 
