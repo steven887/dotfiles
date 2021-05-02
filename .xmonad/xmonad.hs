@@ -50,6 +50,7 @@ import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, Toggl
 import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ThreeColumns
+import XMonad.Layout.ResizableTile
 
 
 -------------------------------------------------------------------
@@ -136,7 +137,7 @@ mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spaci
 mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
 -- $ spacingRaw True (Border 0 8 8 8) True (Border 8 8 8 8) True 
 
-myLayout =  mouseResize $ windowArrange $ avoidStruts   (
+myLayout = avoidStruts $  mouseResize $ windowArrange    (
            tall         ||| 
            grid         |||
            mirror       |||
@@ -149,7 +150,7 @@ myLayout =  mouseResize $ windowArrange $ avoidStruts   (
                $ windowNavigation 
                $ mySpacing 8 
                $ smartBorders
-               $ Tall 1 (3/100) (1/2) 
+               $ ResizableTall 1 (3/100) (1/2) [] 
 
     grid     = renamed [Replace "Grid"] 
                $ windowNavigation 
@@ -294,6 +295,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Expand the master area
     , ((modm,               xK_l     ), sendMessage Expand)
+
+    -- MirrorShrink the master area
+    , ((modm .|. altMask ,               xK_j     ), sendMessage MirrorShrink)
+
+    -- MirrorExpand the master area
+    , ((modm .|. altMask ,               xK_k     ), sendMessage MirrorExpand)
 
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
