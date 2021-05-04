@@ -91,8 +91,8 @@ myClickJustFocuses = False
 myBorderWidth = 2
 
 -- Your border color
-myNormalBorderColor  = "#22d964"
-myFocusedBorderColor = "#3ef008" 
+myNormalBorderColor  = "#81A2BE"
+myFocusedBorderColor = "#0094EB" 
 
 -- Set Your ModKey -> mod1Mask = left alt, mod3Mask = right alt, mod4Mask = window
 myModMask :: KeyMask
@@ -187,15 +187,28 @@ windowCount =
 
 -- doRectFloat :: W.RationalRect -> ManageHook
 
-myManageHook = composeAll
+myManageHook = composeAll 
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore 
     , className =? "xdman-Main"        --> doFloat
+    , className =? "Plasma-desktop" --> doFloat
+    , className =? "plasmashell"    --> doFloat
+    , className =? "krunner"        --> doFloat
     ]
+   -- [[ className =? c --> doFLoat  | c <- myFloats ]
+   -- ,[ className =? c --> doIgnore | c <- myIgnore ]
+   -- ]
+   -- where
+   -- myFloats = [
+   --    "xdman-Main"
+   --   ,"Plasma-desktop"
+   --   ,"plasmashell"
+   --   ,"krunner"
+   --   ]
    <+>composeOne
-   [className =? "Pcmanfm"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
+   [className =? "dolphin"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
    --,className =? "xdman-Main"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
    ]
 -------------------------------------------------------------------
@@ -231,7 +244,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
    -- [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
       [ 
       ((shiftMask .|. controlMask , xK_Return), spawn $ XMonad.terminal conf)
-    , ((0, xK_Print), spawn "scrot 'scrot-%Y-%m-%d_$wx$h.png' -s -e   'mv $f ~/screenshoots'") 
+    , ((0, xK_Print), spawn "scrot 'scrot-%Y-%m-%d_$wx$h.png' -s -e   'mv $f ~/Pictures/screenshoots'") 
    -- launch kitty terminal
     , ((modm .|. shiftMask, xK_Return), spawn myTerminal3)
    
@@ -252,7 +265,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((altMask .|. controlMask  ,      xK_b    ),  spawn "brave --incognito")
 
    -- launch pcmanfm
-    , ((modm,               xK_p   ),   spawn "pcmanfm")
+    , ((modm,               xK_p   ),   spawn "dolphin")
   
    -- launch dmenu
     , ((modm,               xK_d     ), spawn "dmenu_run")
@@ -398,7 +411,7 @@ startupList =
 main :: IO ()
 main = do
 	xmproc0 <- spawnPipe "xmobar -x 0 /home/steven/.config/xmobar/xmobarrc" 
-	xmproc1 <- spawnPipe "xmobar -x 1 /home/steven/.config/xmobar/xmobarrc2" 
+--	xmproc1 <- spawnPipe "xmobar -x 1 /home/steven/.config/xmobar/xmobarrc2" 
  	xmonad $ ewmh defaults {
         logHook = dynamicLogWithPP $ def
         {
