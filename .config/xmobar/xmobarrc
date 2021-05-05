@@ -2,7 +2,7 @@
 --      _____ ___                                                  ##
 --     / ___//   |    # My Personal XMonad Config                  ##
 --     \__ \/ /| |    # Author      : steven Agustinus             ## 
---    ___/ / ___ |    # Find me on  : https://github.com/steven887 ##                            #
+--    ___/ / ___ |    # Find me on  : https://github.com/steven887 ##
 --   /____/_/  |_|                                                 ##
 --                                                                 ## 
 -- ##################################################################
@@ -23,8 +23,8 @@ Config {
    , fgColor         = "white"
   -- , position      = TopW C 95 
   -- , border        = BottomB
-   , position      = Top 
-  -- , position        = Static { xpos = 0 , ypos = 0, width = 1830, height = 20 }
+  -- , position      = Top 
+   , position        = Static { xpos = 0 , ypos = 0, width = 1830, height = 20 }
   -- , position = Static { xpos = 1920 , ypos = 0, width = 1366, height = 19 }
    , borderColor     = "#646464"
    , iconRoot        = "/home/steven/.xmonad/xpm" -- default: "."
@@ -33,7 +33,7 @@ Config {
    
    , sepChar =  "%"   -- delineator between plugin names and straight text
    , alignSep = "}{"  -- separator between left-right alignment
-   , lowerOnStart =     False   -- send to bottom of window stack on start
+   , lowerOnStart =     True   -- send to bottom of window stack on start
    , hideOnStart =      False   -- start with window unmapped (hidden)
    , allDesktops =      True    -- show on all desktops
    , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
