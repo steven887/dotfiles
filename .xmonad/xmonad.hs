@@ -51,6 +51,7 @@ import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.SimplestFloat
 
 
 -------------------------------------------------------------------
@@ -62,7 +63,10 @@ import XMonad.Layout.WindowArranger
 import XMonad.Layout.Renamed
 import XMonad.Layout.ShowWName -- This is a layout modifier that will show the workspace name
 import XMonad.Layout.WindowNavigation
-
+import XMonad.Layout.Simplest
+import XMonad.Layout.SubLayouts
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
 -------------------------------------------------------------------
 ------                         ACTIONS                       ------
 -------------------------------------------------------------------
@@ -134,10 +138,10 @@ myshowWNameTheme = def
 
 
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
-mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
--- $ spacingRaw True (Border 0 8 8 8) True (Border 8 8 8 8) True 
+mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
-myLayout =  mouseResize $ windowArrange $ avoidStruts   (
+myLayout = mouseResize $ windowArrange $ avoidStruts $ mkToggle (NBFULL ?? FULL ?? EOT)  (
+           --monocle      |||
            tall         ||| 
            grid         |||
            mirror       |||
@@ -148,6 +152,7 @@ myLayout =  mouseResize $ windowArrange $ avoidStruts   (
   where 
     tall     = renamed [Replace "Tall"] 
                $ windowNavigation 
+               $ subLayout [] (smartBorders Simplest)
                $ mySpacing 8 
                $ ResizableTall 1 (3/100) (1/2) [] 
 
@@ -165,6 +170,11 @@ myLayout =  mouseResize $ windowArrange $ avoidStruts   (
                $ windowNavigation
                $ mySpacing 8
                $ ThreeCol 1 (3/100) (1/2)
+
+--    monocle = renamed [Replace "monocle"]
+--              $ smartBorders
+--              $ subLayout [] (smartBorders Simplest)
+--              $ Full
 
 
 windowCount :: X (Maybe String)
@@ -253,7 +263,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_p   ),   spawn "pcmanfm")
   
    -- launch dmenu
-    , ((modm,               xK_d     ), spawn "dmenu_run -h 26")
+    , ((modm,               xK_d     ), spawn "dmenu_run -h 24")
 
 
     -- close focused window
@@ -341,6 +351,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- See also the statusBar function from Hooks.DynamicLog.
     --
      , ((modm .|. controlMask             , xK_t     ), sendMessage ToggleStruts)
+    
+    -- Toggle Layout
+     , ((modm .|. shiftMask               , xK_f    ), sendMessage $ Toggle NBFULL)
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
@@ -369,6 +382,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+        
 
 
 ------------------------------------------------------------------------
