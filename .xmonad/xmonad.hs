@@ -253,7 +253,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_p   ),   spawn "pcmanfm")
   
    -- launch dmenu
-    , ((modm,               xK_d     ), spawn "dmenu_run -h 32")
+    , ((modm,               xK_d     ), spawn "dmenu_run -h 26")
 
 
     -- close focused window
