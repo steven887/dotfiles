@@ -217,7 +217,7 @@ myLogHook = return () -- fadeInactiveLogHook fadeAmount
 myStartupHook = do
    spawnOnce "nitrogen --restore &"
    spawnOnce "picom &"
-   spawnOnce "exec /usr/bin/trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 5 --transparent true --alpha 55 --tint 0x000000  --height 20 --monitor 0 --iconspacing 2 &"
+   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 55 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 &"
 
 -------------------------------------------------------------------
 ------                     KEY BINDINGS                      ------               
@@ -253,7 +253,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_p   ),   spawn "pcmanfm")
   
    -- launch dmenu
-    , ((modm,               xK_d     ), spawn "dmenu_run")
+    , ((modm,               xK_d     ), spawn "dmenu_run -h 32")
 
 
     -- close focused window
@@ -328,13 +328,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0,      xF86XK_AudioPrev        ), spawn "playerctl previous")
 
     -- Volume Key - mute/on
-   -- ,  ((0, xF86XK_AudioMute             ), spawn "amixer set Master toggle")
+    ,  ((0, xF86XK_AudioMute             ), spawn "amixer set Master toggle")
    
     -- Volume Key - decrease volume 
-    --,  ((0, xF86XK_AudioLowerVolume      ), spawn "amixer set Master 2%-")
+    ,  ((0, xF86XK_AudioLowerVolume      ), spawn "amixer set Master 2%-")
 
     -- Volume Key - increase volume 
-    --,  ((0, xF86XK_AudioRaiseVolume      ), spawn "amixer set Master 2%+")
+    ,  ((0, xF86XK_AudioRaiseVolume      ), spawn "amixer set Master 2%+")
     
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
