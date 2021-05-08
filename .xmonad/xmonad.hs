@@ -140,7 +140,7 @@ myshowWNameTheme = def
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
-myLayout = mouseResize $ windowArrange $ avoidStruts $ mkToggle (NBFULL ?? FULL ?? EOT)  (
+myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ?? FULL ?? EOT) $ avoidStruts  (
            --monocle      |||
            tall         ||| 
            grid         |||
