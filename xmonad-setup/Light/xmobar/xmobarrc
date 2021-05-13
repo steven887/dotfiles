@@ -2,7 +2,7 @@
 --      _____ ___                                                  ##
 --     / ___//   |    # My Personal XMonad Config                  ##
 --     \__ \/ /| |    # Author      : steven Agustinus             ## 
---    ___/ / ___ |    # Find me on  : https://github.com/steven887 ##                            #
+--    ___/ / ___ |    # Find me on  : https://github.com/steven887 ##
 --   /____/_/  |_|                                                 ##
 --                                                                 ## 
 -- ##################################################################
@@ -10,18 +10,21 @@
 Config { 
 
    -- appearance
-     font            = "xft:MiriamMonoCLM:pixelsize=14:Bold:antialias=true" 
+   --font            = "xft:Noto Sans CJK SC:pixelsize=13:Bold:antialias=true" 
+     font            = "xft:Miriam Mono CLM:pixelsize=14:Bold:antialias=true" -- Hebrew font 
+   --font            = "xft:mononoki Nerd Font:pixelsize=14:Bold:antialias=true" 
    , additionalFonts = ["xft:mononoki Nerd Font:pixelsize=15:Bold:antialias=true"
                        ,"xft:FiraCode Nerd Font:pixelsize=15:Regular:antialias=true"
                        ,"xft:MesloLGL Nerd Font:pixelsize=15:Regular:antialias=true"
-                       ,"xft:FontAwesome:pixelsize=13"]
+                       ,"xft:FontAwesome:pixelsize=13"
+                       ,"xft:Noto Color Emoji:pixelsize=13:Regular" ]
    , bgColor         = "#000000"
-   , alpha           = 100
+   , alpha           = 255
    , fgColor         = "white"
   -- , position      = TopW C 95 
   -- , border        = BottomB
   -- , position      = Top 
-   , position        = Static { xpos = 0 , ypos = 0, width = 1830, height = 20 }
+   , position        = Static { xpos = 0 , ypos = 0, width = 1920, height = 24 }
   -- , position = Static { xpos = 1920 , ypos = 0, width = 1366, height = 19 }
    , borderColor     = "#646464"
    , iconRoot        = "/home/steven/.xmonad/xpm" -- default: "."
@@ -36,7 +39,8 @@ Config {
    , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
    , pickBroadest =     False   -- choose widest display (multi-monitor)
    , persistent =       True    -- enable/disable hiding (True = disabled)
-   , template = "<icon=archlinux-green-20.xpm/><fc=#666666> |</fc><fc=#83F4B0>%UnsafeStdinReader%</fc> } {%battery% <fc=#666666> |</fc> %multicpu%<fc=#666666> |</fc> %coretemp%<fc=#666666> |</fc> %memory%<fc=#666666> |</fc> %dynnetwork%<fc=#666666> |</fc> %date% " -- general behavior
+   , template = "<icon=archlinux-green-20.xpm/><fc=#666666> |</fc><fc=#83F4B0>%UnsafeStdinReader%</fc> }{ %default:Master%<fc=#666666> | </fc>%battery%<fc=#666666> | </fc>%multicpu%<fc=#666666> | </fc>%coretemp%<fc=#666666> | </fc> %memory%<fc=#666666> | </fc> %dynnetwork%<fc=#666666> | </fc> %date% <fc=#666666>|</fc> %trayerpad% " 
+   
    
    -- plugins
    --   Numbers can be automatically colored according to their value. xmobar
@@ -62,7 +66,7 @@ Config {
         , Run UnsafeStdinReader
 
         -- network activity monitor (dynamic interface resolution)
-        , Run DynNetwork     [ "--template" , "<fn=2><fc=#6dec2f>\xf0aa</fc></fn> <tx><fc=#22d964> kB/s</fc> <fn=2><fc=#6dec2f>\xf0ab</fc> </fn><rx><fc=#22d964> kB/s</fc>"
+        , Run DynNetwork     [ "--template" , "<fn=2><fc=#6dec2f>\xf0aa </fc></fn><tx><fc=#22d964> kB/s</fc> <fn=2><fc=#6dec2f> \xf0ab </fc></fn><rx><fc=#22d964> kB/s</fc>"
                              , "--Low"      , "1000"       -- units: B/s  
                              , "--High"     , "5000"       -- units: B/s
                              , "--low"      , "lightblue"
@@ -71,7 +75,7 @@ Config {
                              ] 10
 
         -- cpu activity monitor
-        , Run MultiCpu       [ "--template" , "<fn=2><fc=#6dec2f>\xf2db</fc></fn> <total0> %" --|<total1>%"
+        , Run MultiCpu       [ "--template" , "<fn=2><fc=#6dec2f> \xf2db </fc></fn> <total0>%" --|<total1>%"
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "85"         -- units: %
                              , "--low"      , "lightblue"
@@ -80,7 +84,7 @@ Config {
                              ] 10
 
         -- cpu core temperature monitor
-        , Run CoreTemp       [ "--template" , "<fn=2><fc=#6dec2f>\xf2c8</fc></fn> <core0> <fn=2>\xfa03</fn>" -- |<core1>°C" , "--Low"      , "70"        -- units: °C
+        , Run CoreTemp       [ "--template" , "<fc=#6dec2f> <fn=3>\xf2c8</fn> </fc><core0><fn=1> \xfa03 </fn>"-- |<core1>°C" , "--Low"      , "70"        -- units: °C
                              , "--High"     , "80"        -- units: °C
                              , "--low"      , "lightblue"
                              , "--normal"   , "darkorange"
@@ -88,7 +92,7 @@ Config {
                              ] 50
                           
         -- memory usage monitor
-        , Run Memory         [ "--template" ,"<fn=2><fc=#6dec2f>\xf85a</fc></fn> : <usedratio> %"
+        , Run Memory         [ "--template" ,"<fn=3><fc=#6dec2f>\xf85a </fc></fn><usedratio>%"
                              , "--Low"      , "20"        -- units: %
                              , "--High"     , "90"        -- units: %
                              , "--low"      , "lightblue"
@@ -110,19 +114,25 @@ Config {
                                        -- AC "on" status
                                        , "-O"	, "<fc=#dAA520><fn=3>\xf583</fc>"
                                        -- charged status
-                                       , "-i"	, "<fc=#6dec2f><fn=3>\xf1e6</fn></fc>"
+                                       , "-i"	, "<fc=#6dec2f><fn=3> \xf1e6 </fn></fc>"
                              ] 50
 
         -- time and date indicator 
         --   (%F = d-m-y date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<fc=#6dec2f><fn=2>\xf073</fn></fc> <fc=#22d964> %a,%e-%b-%Y %R</fc>" "date" 10
+        , Run Date           "<fc=#6dec2f><fn=3> \xf073 </fn></fc> <fc=#22d964>%a,%e-%b-%Y %R </fc>" "date" 10
 
         -- keyboard layout indicator
         , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
                              , ("us"         , "<fc=#8B0000>US</fc>")
                              ]
+        -- volume indicator 
+        , Run Volume "default" "Master" ["--template", "<fn=3><fc=#6dec2f> \xf7ca </fc></fn><fc=#22d964><volume>%</fc> <status>"
+
+                                        ] 10
+        -- trayer padding
+        , Run Com "/home/steven/.config/xmobar/padding-icon.sh" ["panel"] "trayerpad" 10
+
         ]
    }
 
 
-   -- <fn=1>\xf109</fn>
