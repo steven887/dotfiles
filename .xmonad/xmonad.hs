@@ -3,7 +3,7 @@
 --      _____ ___                                                  ##
 --     / ___//   |    # My Personal XMonad Config                  ##
 --     \__ \/ /| |    # Author      : steven Agustinus             ## 
---    ___/ / ___ |    # Find me on  : https://github.com/steven887 ##                            #
+--    ___/ / ___ |    # Find me on  : https://github.com/steven887 ##                            
 --   /____/_/  |_|                                                 ##
 --                                                                 ## 
 -- ##################################################################
@@ -108,6 +108,7 @@ altMask = mod1Mask
 -- Set your workspaces
 --myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 --myWorkspaces = ["חתא","םיתש","שלש","עברא","שמח","שש","עבש","הנומש","עשת"]
+--myWorkspaces = ["一","二","三","四","五","六","七","八","九"]
 myWorkspaces = ["異","二","三","四","五","六","七","八","九"]
 --myWorkspaces = [" \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c"]
 
