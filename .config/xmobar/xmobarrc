@@ -12,14 +12,13 @@ Config {
    -- appearance
    --font            = "xft:Noto Sans CJK SC:pixelsize=13:Bold:antialias=true" 
    --font            = "xft:Miriam Mono CLM:pixelsize=14:Bold:antialias=true" -- Hebrew font 
-   font            = "xft:mononoki Nerd Font:pixelsize=14:Bold:antialias=true" 
-   , additionalFonts = ["xft:mononoki Nerd Font:pixelsize=15:Bold:antialias=true"
-                       ,"xft:FiraCode Nerd Font:pixelsize=15:Regular:antialias=true"
-                       ,"xft:MesloLGL Nerd Font:pixelsize=15:Regular:antialias=true"
-                       ,"xft:FontAwesome:pixelsize=13"
+   --font            = "xft:JetBrainsMono Nerd Font:pixelsize=13:Bold:antialias=true" 
+     font            = "xft:Font Awesome 5 Free Solid:pixelsize=17:Solid:antialias=true,JetBrainsMono Nerd Font:pixelsize=13:Bold:antialias=true"
+   , additionalFonts = ["xft:MesloLGL Nerd Font:pixelsize=16:Regular:antialias=true"
+                       ,"xft:Font Awesome 5 Free Solid:pixelsize=15:Solid:antialias=true"
                        ,"xft:Noto Color Emoji:pixelsize=13:Regular" ]
    , bgColor         = "#000000"
-   , alpha           = 255
+   , alpha           = 127 
    , fgColor         = "white"
   -- , position      = TopW C 95 
   -- , border        = BottomB
@@ -39,8 +38,8 @@ Config {
    , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
    , pickBroadest =     False   -- choose widest display (multi-monitor)
    , persistent =       True    -- enable/disable hiding (True = disabled)
-   , template = "<icon=archlinux-green-20.xpm/><fc=#666666> |</fc><fc=#83F4B0>%UnsafeStdinReader%</fc> }{ %default:Master%<fc=#666666> | </fc>%battery%<fc=#666666> | </fc>%multicpu%<fc=#666666> | </fc>%coretemp%<fc=#666666> | </fc> %memory%<fc=#666666> | </fc> %dynnetwork%<fc=#666666> | </fc> %date% <fc=#666666>|</fc> %trayerpad% " 
-   
+   , template = "<fc=#7bf9f2>%UnsafeStdinReader%</fc> }{ %default:Master% <fc=#666666>|</fc> %battery% <fc=#666666>|</fc> %multicpu% <fc=#666666>|</fc> %coretemp% <fc=#666666>|</fc> %memory% <fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc> %date% <fc=#666666>|</fc> %trayerpad% " 
+   --<icon=arch20x20.xpm/><fc=#666666> |</fc> 
    
    -- plugins
    --   Numbers can be automatically colored according to their value. xmobar
@@ -66,7 +65,7 @@ Config {
         , Run UnsafeStdinReader
 
         -- network activity monitor (dynamic interface resolution)
-        , Run DynNetwork     [ "--template" , "<fn=2><fc=#6dec2f>\xf0aa </fc></fn><tx><fc=#22d964> kB/s</fc> <fn=2><fc=#6dec2f> \xf0ab </fc></fn><rx><fc=#22d964> kB/s</fc>"
+        , Run DynNetwork     [ "--template" , "<fn=1><fc=#0CBCF7>\xf0aa </fc></fn><tx><fc=#0febff> kB/s</fc> <fn=1><fc=#0CBCF7> \xf0ab </fc></fn><rx><fc=#0febff> kB/s</fc>"
                              , "--Low"      , "1000"       -- units: B/s  
                              , "--High"     , "5000"       -- units: B/s
                              , "--low"      , "lightblue"
@@ -75,7 +74,7 @@ Config {
                              ] 10
 
         -- cpu activity monitor
-        , Run MultiCpu       [ "--template" , "<fn=2><fc=#6dec2f> \xf2db </fc></fn> <total0>%" --|<total1>%"
+        , Run MultiCpu       [ "--template" , "<fn=1><fc=#0CBCF7> \xf2db </fc></fn> <total0>%" --|<total1>%"
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "85"         -- units: %
                              , "--low"      , "lightblue"
@@ -84,7 +83,7 @@ Config {
                              ] 10
 
         -- cpu core temperature monitor
-        , Run CoreTemp       [ "--template" , "<fc=#6dec2f> <fn=3>\xf2c8</fn> </fc><core0><fn=1> \xfa03 </fn>"-- |<core1>°C" , "--Low"      , "70"        -- units: °C
+        , Run CoreTemp       [ "--template" , "<fc=#0CBCF7> <fn=1>\xf2c8</fn> </fc><core0><fn=1> \xfa03 </fn>"-- |<core1>°C" , "--Low"      , "70"        -- units: °C
                              , "--High"     , "80"        -- units: °C
                              , "--low"      , "lightblue"
                              , "--normal"   , "darkorange"
@@ -92,7 +91,7 @@ Config {
                              ] 50
                           
         -- memory usage monitor
-        , Run Memory         [ "--template" ,"<fn=3><fc=#6dec2f>\xf85a </fc></fn><usedratio>%"
+        , Run Memory         [ "--template" ,"<fn=1><fc=#0CBCF7>\xf85a </fc></fn><usedratio>%"
                              , "--Low"      , "20"        -- units: %
                              , "--High"     , "90"        -- units: %
                              , "--low"      , "lightblue"
@@ -112,21 +111,24 @@ Config {
                                        -- discharging status
                                        , "-o"	, "<left>% (<timeleft>)"
                                        -- AC "on" status
-                                       , "-O"	, "<fc=#dAA520><fn=3>\xf583</fc>"
+                                       , "-O"	, "<fc=#dAA520><fn=1>\xf583</fc>"
                                        -- charged status
-                                       , "-i"	, "<fc=#6dec2f><fn=3> \xf1e6 </fn></fc>"
+                                       , "-i"	, "<fc=#0CBCF7><fn=1> \xf1e6 </fn></fc>"
                              ] 50
 
         -- time and date indicator 
         --   (%F = d-m-y date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<fc=#6dec2f><fn=3> \xf073 </fn></fc> <fc=#22d964>%a,%e-%b-%Y %R </fc>" "date" 10
+        , Run Date           "<fc=#0CBCF7><fn=1> \xf073 </fn></fc> <fc=#9fffff>%a,%e-%b-%Y %R </fc>" "date" 10
 
         -- keyboard layout indicator
         , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
                              , ("us"         , "<fc=#8B0000>US</fc>")
                              ]
-        -- volume indicator 
-        , Run Volume "default" "Master" ["--template", "<fn=3><fc=#6dec2f> \xf7ca </fc></fn><fc=#22d964><volume>%</fc> <status>"
+           -- volume indicator 
+           , Run Volume "default" "Master" ["--template", "<fn=1><fc=#0CBCF7> \xf7ca </fc></fn><fc=#9fffff><volume>%</fc> <status>"
+                                           , "--" -- volume status
+                                                  -- status on 
+                                                  , "-O","<fc=#0febff>[On]</fc> "
 
                                         ] 10
         -- trayer padding

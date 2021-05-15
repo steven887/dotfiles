@@ -171,7 +171,7 @@ myshowWNameTheme = def
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
-myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ?? FULL ?? EOT) $ avoidStruts  (
+myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?? EOT) $ avoidStruts  (
            --monocle      |||
            tall         ||| 
            grid         |||
@@ -232,6 +232,7 @@ myManageHook = composeAll
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore 
     , className =? "xdman-Main"        --> doFloat
+    , className =? "kitty"          --> hasBorder False
     ]
    <+>composeOne
    [className =? "Pcmanfm"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
@@ -272,7 +273,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
       ((shiftMask .|. controlMask , xK_Return), spawn $ XMonad.terminal conf)
     , ((0, xK_Print), spawn "scrot 'scrot-%Y-%m-%d_$wx$h.png' -s -e   'mv $f ~/screenshoots'") 
    -- launch kitty terminal
-    , ((modm .|. shiftMask, xK_Return), spawn myTerminal3)
+    , ((modm .|. shiftMask, xK_Return), spawn myTerminal3 )
    
 
    -- launch vscode
@@ -385,6 +386,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     
     -- Toggle Layout
      , ((modm .|. shiftMask               , xK_f    ), sendMessage $ Toggle NBFULL)
+
+     , ((modm .|. shiftMask               , xK_b    ), sendMessage $ Toggle NOBORDERS)
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))

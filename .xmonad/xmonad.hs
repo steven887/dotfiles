@@ -94,8 +94,12 @@ myClickJustFocuses = False
 myBorderWidth = 2
 
 -- Your border color
-myNormalBorderColor  = "#22d964"
-myFocusedBorderColor = "#3ef008" 
+myNormalBorderColor  = "#BADFFD"
+myFocusedBorderColor = "#0Febff" 
+
+---- neon-green setup border
+--myNormalBorderColor  = "#22d964"
+--myFocusedBorderColor = "#3ef008" 
 
 -- Set Your ModKey -> mod1Mask = left alt, mod3Mask = right alt, mod4Mask = window
 myModMask :: KeyMask
@@ -109,12 +113,36 @@ altMask = mod1Mask
 --myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 --myWorkspaces = ["חתא","םיתש","שלש","עברא","שמח","שש","עבש","הנומש","עשת"]
 --myWorkspaces = ["一","二","三","四","五","六","七","八","九"]
-myWorkspaces = ["異","二","三","四","五","六","七","八","九"]
---myWorkspaces = [" \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c "," \xf10c"]
+--
+-- use icon for workspaces
+-- set variables for icon
+-- fn=2 is font from xmobar additional font
+a ="\xf120" 
+b ="\xf008" 
+c ="\xf001" 
+d ="\xf447" 
+e ="\xf441" 
+f ="\xf43a" 
+g ="\xf43f" 
+h ="\xf445" 
+i ="\xf443" 
+
+--a ="\61728" 
+--b ="\61448" 
+--c ="\61441" 
+--d ="\62535" 
+--e ="\62529" 
+--f ="\62522" 
+--g ="\62527" 
+--h ="\62533" 
+--i ="\62531" 
+   
+
+myWorkspaces = [ a,b,c,d,e,f,g,h,i] 
 
 -----------  make your workspace on xmobar clickable ------------
-myWorkspacesIndices = M.fromList $ zipWith (,) myWorkspaces [1..] 
-
+myWorkspacesIndices = M.fromList  $ zipWith (,) myWorkspaces [1..] 
+--
 clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
     where i = fromJust $ M.lookup ws myWorkspacesIndices
 ------------------------------------------------------------------
@@ -131,17 +159,19 @@ myshowWNameTheme :: SWNConfig
 myshowWNameTheme = def
   {
   --swn_font         = "xft:MiriamMonoCLM:bold:size=60:antialias=true:hinting=true"
-  swn_font         = "xft:NotoSansCJKSC:bold:size=60:antialias=true:hinting=true"
-  ,swn_fade         = 0.7
+  --swn_font         = "xft:NotoSansCJKSC:bold:size=60:antialias=true:hinting=true"
+  swn_font         = "xft:Font Awesome 5 Free Solid:Solid:pixelsize=120:antialias=true:hinting=true"
+  --swn_font          = "xft:MesloLGL Nerd Font:size=60:Regular:antialias=true"
+  ,swn_fade         = 0.25
   ,swn_bgcolor      = "#191c21"
-  ,swn_color        = "#23A611"
+  ,swn_color        = "#0CBCF7"
   }
 
 
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
-myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ?? FULL ?? EOT) $ avoidStruts  (
+myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?? EOT) $ avoidStruts  (
            --monocle      |||
            tall         ||| 
            grid         |||
@@ -202,6 +232,7 @@ myManageHook = composeAll
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore 
     , className =? "xdman-Main"        --> doFloat
+    , className =? "kitty"          --> hasBorder False
     ]
    <+>composeOne
    [className =? "Pcmanfm"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
@@ -228,7 +259,7 @@ myLogHook = return () -- fadeInactiveLogHook fadeAmount
 myStartupHook = do
    spawnOnce "nitrogen --restore &"
    spawnOnce "picom &"
-   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 55 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 &"
+   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 127 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 &"
 
 -------------------------------------------------------------------
 ------                     KEY BINDINGS                      ------               
@@ -242,7 +273,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
       ((shiftMask .|. controlMask , xK_Return), spawn $ XMonad.terminal conf)
     , ((0, xK_Print), spawn "scrot 'scrot-%Y-%m-%d_$wx$h.png' -s -e   'mv $f ~/screenshoots'") 
    -- launch kitty terminal
-    , ((modm .|. shiftMask, xK_Return), spawn myTerminal3)
+    , ((modm .|. shiftMask, xK_Return), spawn myTerminal3 )
    
 
    -- launch vscode
@@ -356,6 +387,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Toggle Layout
      , ((modm .|. shiftMask               , xK_f    ), sendMessage $ Toggle NBFULL)
 
+     , ((modm .|. shiftMask               , xK_b    ), sendMessage $ Toggle NOBORDERS)
+
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
@@ -414,12 +447,15 @@ main = do
         logHook = dynamicLogWithPP $ def
         {
           ppOutput  = \x ->  hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
-        , ppCurrent = xmobarColor "#cbe500" "#078202"  . wrap " "  " " -- "#71fe00" -- . wrap "[" "]"
-        , ppVisible = xmobarColor "#2ba402" "" .  clickable
-        , ppHidden  = xmobarColor "#498236" "" . wrap "" "*" . clickable
-        , ppTitle   = xmobarColor "#22d964" "" . shorten 50
+        --, ppCurrent = xmobarColor "#cbe500" "#078202"  . wrap " "  " " -- "#71fe00" -- . wrap "[" "]"
+        -- without background
+        , ppCurrent = xmobarColor "#7bf9f2" ""  . wrap " "  " " -- "#71fe00" -- . wrap "[" "]"
+        , ppVisible = xmobarColor "#0CBCF7" ""  .  clickable
+        --, ppHidden  = xmobarColor "#498236" "" . wrap "" "*"  . clickable
+        , ppHidden  = xmobarColor "#fff" ""  .wrap " " " " . clickable
+        , ppTitle   = xmobarColor "#9fffff" "" . shorten 50
         , ppSep     =  "<fc=#666666> | </fc>"
-        , ppHiddenNoWindows = xmobarColor "#373b41" "" . wrap "|" " " 
+        , ppHiddenNoWindows = xmobarColor "#373b41" ""   . wrap " " " " 
         , ppExtras  = [windowCount] 
         , ppOrder   = \(ws:l:t:ex) -> [ws, l]++ex++[t]
         }
