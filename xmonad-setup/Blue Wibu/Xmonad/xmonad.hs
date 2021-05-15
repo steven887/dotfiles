@@ -164,7 +164,7 @@ myshowWNameTheme = def
   --swn_font          = "xft:MesloLGL Nerd Font:size=60:Regular:antialias=true"
   ,swn_fade         = 0.25
   ,swn_bgcolor      = "#191c21"
-  ,swn_color        = "#23A611"
+  ,swn_color        = "#0CBCF7"
   }
 
 
