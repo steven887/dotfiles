@@ -1,4 +1,4 @@
-<h1 align="center">✳️ ✨ My XMonad Customization Setup,<i>"Blue Weaboo"</i> ✨✳️</h1> 
+<h1 align="center">✳️ ✨ My XMonad Customization Setup,<i>"Blue Wibu"</i> ✨✳️</h1> 
 
 <p align="center" >
 <img src = "https://github.com/steven887/dotfiles/blob/main/xmonad-setup/Blue%20Wibu/screenshot/1.png" >
