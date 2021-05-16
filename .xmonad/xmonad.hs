@@ -162,7 +162,7 @@ myshowWNameTheme = def
   --swn_font         = "xft:NotoSansCJKSC:bold:size=60:antialias=true:hinting=true"
   swn_font         = "xft:Font Awesome 5 Free Solid:Solid:pixelsize=120:antialias=true:hinting=true"
   --swn_font          = "xft:MesloLGL Nerd Font:size=60:Regular:antialias=true"
-  ,swn_fade         = 0.25
+  ,swn_fade         = 0.50
   ,swn_bgcolor      = "#191c21"
   ,swn_color        = "#0CBCF7"
   }
