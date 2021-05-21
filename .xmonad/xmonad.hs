@@ -34,6 +34,7 @@ import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 import XMonad.Util.EZConfig
 import Graphics.X11.ExtraTypes.XF86
+import XMonad.Util.NamedScratchpad
 -------------------------------------------------------------------
 ------                          HOOKS                        ------ 
 -------------------------------------------------------------------
@@ -221,23 +222,48 @@ windowCount =
     . windowset
 
 -------------------------------------------------------------------
+------                     SCRATCHPAD                        ------               
+-------------------------------------------------------------------
+-- notes : 
+-- customFloating :: RationalRect l t w h
+--where
+--h = 0.6 -- height 60%
+--w = 0.6 -- width 60%
+--t = 0.2 -- (1 - h)/2  --> center from top/bottom
+--l = 0.2 -- (1 - w)/2  --> center from left/right
+
+scratchpads = [ NS "terminal" spawnSt findSt stLayout
+                
+              ]
+     where
+     spawnSt  = myTerminal  ++ " -n st-terminal" 
+     findSt   = resource =? "st-terminal"
+     stLayout = customFloating $ W.RationalRect (0.1)(0.1)(0.8)(0.8) 
+
+-------------------------------------------------------------------
 ------                   WINDOW RULES                        ------               
 -------------------------------------------------------------------
 
 -- doRectFloat :: W.RationalRect -> ManageHook
 
 myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore 
-    , className =? "xdman-Main"        --> doFloat
-    , className =? "kitty"          --> hasBorder False
+    [ className =? "MPlayer"            -->   doFloat
+    , className =? "Gimp"               -->   doFloat
+    --, resource  =? "desktop_window"     -->   doIgnore
+    --, resource  =? "kdesktop"           -->   doIgnore 
+    , className =? "xdman-Main"         -->   doFloat
+    , className =? "kitty"              -->   hasBorder False
+
     ]
    <+>composeOne
-   [className =? "Pcmanfm"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
-   --,className =? "xdman-Main"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
+   [
+     className =? "Pcmanfm"                 -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
+   , className =? "Blueman-manager"         -?>  doCenterFloat  
+   , className =? "Pavucontrol"             -?>  doCenterFloat  
+   , className =? "Nm-connection-editor"    -?>  doCenterFloat  
+--,className =? "xdman-Main"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
    ]
+   <+> namedScratchpadManageHook scratchpads
 -------------------------------------------------------------------
 ------                   EVENT HANDLING                      ------               
 -------------------------------------------------------------------
@@ -260,6 +286,8 @@ myStartupHook = do
    spawnOnce "nitrogen --restore &"
    spawnOnce "picom &"
    spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 127 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 &"
+
+
 
 -------------------------------------------------------------------
 ------                     KEY BINDINGS                      ------               
@@ -302,7 +330,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_c     ), kill)
 
      -- Rotate through the available layout algorithms
-    , ((modm,               xK_space ), sendMessage NextLayout)
+    , ((modm,               xK_Tab ), sendMessage NextLayout)
 
     --  Reset the layouts on the current workspace to default
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
@@ -311,7 +339,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_n     ), refresh)
 
     -- Move focus to the next window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
+    , ((altMask,               xK_Tab   ), windows W.focusDown)
 
     -- Move focus to the next window
     , ((modm,               xK_j     ), windows W.focusDown)
@@ -395,8 +423,14 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
 
+    -- Lockscreen
+    , ((modm .|. shiftMask ,xK_l     ), spawn "multilockscreen -l blur")
+
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
+    
+    -- Scratchpads
+    , ((controlMask .|. altMask,  xK_Return ), namedScratchpadAction scratchpads "terminal")
     ]
     ++
 

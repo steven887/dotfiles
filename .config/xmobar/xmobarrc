@@ -13,7 +13,7 @@ Config {
    --font            = "xft:Noto Sans CJK SC:pixelsize=13:Bold:antialias=true" 
    --font            = "xft:Miriam Mono CLM:pixelsize=14:Bold:antialias=true" -- Hebrew font 
    --font            = "xft:JetBrainsMono Nerd Font:pixelsize=13:Bold:antialias=true" 
-     font            = "xft:Font Awesome 5 Free Solid:pixelsize=17:Solid:antialias=true,JetBrainsMono Nerd Font:pixelsize=13:Bold:antialias=true"
+     font            = "xft:Font Awesome 5 Free Solid:pixelsize=17:Solid:antialias=true,JetBrainsMono Nerd Font:pixelsize=13:Bold:antialias=true,Symbola:pixelsize=13:Regular"
    , additionalFonts = ["xft:MesloLGL Nerd Font:pixelsize=16:Regular:antialias=true"
                        ,"xft:Font Awesome 5 Free Solid:pixelsize=15:Solid:antialias=true"
                        ,"xft:Noto Color Emoji:pixelsize=13:Regular" ]
