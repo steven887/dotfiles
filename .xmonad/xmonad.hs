@@ -68,20 +68,22 @@ import XMonad.Layout.Simplest
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
+import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(Toggle))
 -------------------------------------------------------------------
 ------                         ACTIONS                       ------
 -------------------------------------------------------------------
 import XMonad.Actions.MouseResize
 import XMonad.Actions.OnScreen
+import XMonad.Actions.WithAll
+
 ------------------ # End Import Section # -------------------------
 -------------------------------------------------------------------
 
 -------------------- # Variables Section # ------------------------    
 
 ----  what terminal emulator you use?
-myTerminal = "st"
-myTerminal2 = "alacritty"
-myTerminal3 = "kitty"
+s_Term = "st"
+s_Term2 = "kitty"
 
 -- Focus follow your mouse pointer or not
 myFocusFollowsMouse :: Bool
@@ -175,20 +177,21 @@ myshowWNameTheme = def
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
-myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?? EOT) $ avoidStruts  (
+myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?? EOT) $ T.toggleLayouts floats $ avoidStruts  (
            --monocle      |||
            tall         ||| 
            grid         |||
            mirror       |||
            threeCol     |||
-           tab
+           tab          |||
+           floats
            )            ||| 
            noBorders Full
 
   where 
     tall     = renamed [Replace "Tall"] 
                $ windowNavigation 
-               $ subLayout [] (smartBorders Simplest)
+               -- $ subLayout [] (smartBorders Simplest)
                $ mySpacing 8 
                $ ResizableTall 1 (3/100) (1/2) [] 
 
@@ -209,6 +212,12 @@ myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?
 
     tab      = renamed [Replace "Tabs"]
                $ tabbed shrinkText myTabConfig 
+
+    floats   = renamed [Replace "Floats"]
+               $ smartBorders 
+               $ simplestFloat
+
+               
 
 --    monocle = renamed [Replace "monocle"]
 --              $ smartBorders
@@ -254,7 +263,7 @@ scratchpads = [ NS "terminal" spawnSt findSt stLayout
                 
               ]
      where
-     spawnSt  = myTerminal  ++ " -n st-terminal" 
+     spawnSt  = s_Term  ++ " -n st-terminal" 
      findSt   = resource =? "st-terminal"
      stLayout = customFloating $ W.RationalRect (0.1)(0.1)(0.8)(0.8) 
 
@@ -306,188 +315,79 @@ myStartupHook = do
    spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 127 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 &"
 
 
-
 -------------------------------------------------------------------
 ------                     KEY BINDINGS                      ------               
 -------------------------------------------------------------------
+s_Keys :: [(String, X ())]
+s_Keys =
+   -- Apps Section
+         [ ("C-S-<Return>",                     spawn s_Term  )
+         , ("M-S-<Return>",                     spawn s_Term2 )
+         , ("M-S-v",                             spawn "code" ) 
+         , ("M-S-b",                            spawn "brave" )
+         , ("M-S-f",                          spawn "firefox" )
+         , ("M-p",                            spawn "pcmanfm" )
+         , ("M-d",                    spawn "dmenu_run -h 24" )
+         
+  -- Window Section
+  -- Kill windows
+        , ("M-S-c",                                      kill )
+        , ("M-S-a",                                   killAll )
 
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
+  -- Window Resizing      
+        , ("M-h",                          sendMessage Shrink )
+        , ("M-l",                           sendMessage Expand)
+        , ("M-M1-j",                  sendMessage MirrorShrink)
+        , ("M-M1-k",                  sendMessage MirrorExpand)
 
-   -- launch a terminal (alacritty)
-   -- [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
-      [ 
-      ((shiftMask .|. controlMask , xK_Return), spawn $ XMonad.terminal conf)
-    , ((0, xK_Print), spawn "scrot 'scrot-%Y-%m-%d_$wx$h.png' -s -e   'mv $f ~/screenshoots'") 
-   -- launch kitty terminal
-    , ((modm .|. shiftMask, xK_Return), spawn myTerminal3 )
-   
+  -- Window Focus
+        , ("M1-<Tab>",                     windows W.focusDown)
+        , ("M-j",                          windows W.focusDown)
+        , ("M-k",                          windows W.focusUp  )
+        , ("M-m",                       windows W.focusMaster )
+        , ("M-<Return>",                  windows W.swapMaster)
+        , ("M-S-j",                        windows W.swapDown )
+        , ("M-S-k",                          windows W.swapUp )
 
-   -- launch vscode
-    , ((modm,              xK_v  ), spawn "code")
-
-   -- launch firefox private
-    , ((altMask .|. controlMask   ,       xK_f  ), spawn "firefox --private-window")
-
-   -- launch firefox 
-    , ((modm   ,       xK_f  ), spawn "firefox")
-   
-   -- launch brave browser incgonito
-    , ((modm,                xK_b    ),  spawn "brave")
-   
-   -- launch brave browser
-    , ((altMask .|. controlMask  ,      xK_b    ),  spawn "brave --incognito")
-
-   -- launch pcmanfm
-    , ((modm,               xK_p   ),   spawn "pcmanfm")
-  
-   -- launch dmenu
-    , ((modm,               xK_d     ), spawn "dmenu_run -h 24")
-
-
-    -- close focused window
-    , ((modm .|. shiftMask, xK_c     ), kill)
-
-     -- Rotate through the available layout algorithms
-    , ((modm,               xK_Tab ), sendMessage NextLayout)
-
-    --  Reset the layouts on the current workspace to default
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
-
-    -- Resize viewed windows to the correct size
-    , ((modm,               xK_n     ), refresh)
-
-    -- Move focus to the next window
-    , ((altMask,               xK_Tab   ), windows W.focusDown)
-
-    -- Move focus to the next window
-    , ((modm,               xK_j     ), windows W.focusDown)
-
-    -- Move focus to the previous window
-    , ((modm,               xK_k     ), windows W.focusUp  )
-
-    -- Move focus to the master window
-    , ((modm,               xK_m     ), windows W.focusMaster  )
-
-    -- Swap the focused window and the master window
-    , ((modm,               xK_Return), windows W.swapMaster)
-
-    -- Swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
-
-    -- Swap the focused window with the previous window
-    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
-
-    -- Shrink the master area
-    , ((modm,               xK_h     ), sendMessage Shrink)
-
-    -- Expand the master area
-    , ((modm,               xK_l     ), sendMessage Expand)
-
-    -- MirrorShrink the master area
-    , ((modm .|. altMask ,               xK_j     ), sendMessage MirrorShrink)
-
-    -- MirrorExpand the master area
-    , ((modm .|. altMask ,               xK_k     ), sendMessage MirrorExpand)
-
-    -- Push window back into tiling
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
-
-    -- Increment the number of windows in the master area
-    , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
-
-    -- Deincrement the number of windows in the master area
-    , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
-
-    ------------------------------- EXTRA KEYS ------------------------------
-    -- Media Player keybindings --
-    -- launch spotify
-    , ((0,      xF86XK_Tools        ), spawn "spotify-adblock")
-
-    -- PlayPause
-    , ((0,      xF86XK_AudioPlay        ), spawn "playerctl play-pause")
-   
-    -- Stop
-    , ((0,      xF86XK_AudioStop        ), spawn "playerctl stop")
-  
-    -- Next
-    , ((0,      xF86XK_AudioNext        ), spawn "playerctl next")
-  
-    -- Previous
-    , ((0,      xF86XK_AudioPrev        ), spawn "playerctl previous")
-
-    -- Volume Key - mute/on
-    ,  ((0, xF86XK_AudioMute             ), spawn "amixer set Master toggle")
-   
-    -- Volume Key - decrease volume 
-    ,  ((0, xF86XK_AudioLowerVolume      ), spawn "amixer set Master 2%-")
-
-    -- Volume Key - increase volume 
-    ,  ((0, xF86XK_AudioRaiseVolume      ), spawn "amixer set Master 2%+")
-    
-    -- Toggle the status bar gap
-    -- Use this binding with avoidStruts from Hooks.ManageDocks.
-    -- See also the statusBar function from Hooks.DynamicLog.
-    --
-     , ((modm .|. controlMask             , xK_t     ), sendMessage ToggleStruts)
-    
-    -- Toggle Layout
-     , ((modm .|. shiftMask               , xK_f    ), sendMessage $ Toggle NBFULL)
-
-     , ((modm .|. shiftMask               , xK_b    ), sendMessage $ Toggle NOBORDERS)
-
-    -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
-
-    -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
-
-    -- Lockscreen
-    , ((modm .|. shiftMask ,xK_l     ), spawn "multilockscreen -l blur")
-
-    -- Run xmessage with a summary of the default keybindings (useful for beginners)
-    , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
-    
-    -- Scratchpads
-    , ((controlMask .|. altMask,  xK_Return ), namedScratchpadAction scratchpads "terminal")
-    ]
-    ++
-
-    --
-    -- mod-[1..9], Switch to workspace N
-    -- mod-shift-[1..9], Move client to workspace N
-    --
-    [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-    ++
-
-    --
-    -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{w,e,r}, Move client to screen 1, 2, or smartBordere3
-    --
-    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+  -- Window push back into tiling/float
+        , ("M-t",               withFocused $ windows . W.sink) -- push from floating windows back to tile
+        , ("M-S-t",                                   sinkAll ) -- push all floating windows back to tile
         
+  -- Layout Toggle
+        , ("M-S-t",            sendMessage (T.Toggle "Floats"))
+        , ("M-S-f",                sendMessage $ Toggle NBFULL) -- toggle Full noborders
+        , ("M-S-_b",            sendMessage $ Toggle NOBORDERS) -- toggle noBorders
+        , ("M-C-t"                  , sendMessage ToggleStruts) -- toggle status bar gap
 
+  -- Changging Layout
+  
+       , ("M-<Tab>",                   sendMessage NextLayout )
+      -- , ("M-S-<space>",   setLayout $ XMonad.layoutHook conf )
+        
+  -- Increase / Decrease Master
+        , ("M-,",                   sendMessage (IncMasterN 1))
+        , ("M-.",                sendMessage (IncMasterN (-1)))
 
-------------------------------------------------------------------------
--- Mouse bindings: default actions bound to mouse events
---
-myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
+  -- Media Keys / Extra Keys
 
-    -- mod-button1, Set the window to floating mode and move by dragging
-    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
-                                       >> windows W.shiftMaster))
+    , ("<XF86Tools>",                  spawn "spotify-adblock")
+    , ("<XF86AudioPlay>",         spawn "playerctl play-pause")
+    , ("<XF86AudioStop>",               spawn "playerctl stop")
+    , ("<XF86AudioNext>",               spawn "playerctl next")
+    , ("<XF86AudioPrev>",           spawn "playerctl previous")
+    , ("<XF86AudioMute>",     spawn "amixer set Master toggle")
+    , ("<XF86AudioLowerVolume>", spawn "amixer set Master 2%-")
+    , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 2%+")
 
-    -- mod-button2, Raise the window to the top of the stack
-    , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
+  -- XMonad
+    , ("M-S-q",                      io (exitWith ExitSuccess))
+    , ("M-q",     spawn "xmonad --recompile; xmonad --restart")
 
-    -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
-                                       >> windows W.shiftMaster))
-   ] 
--------------------------------------------------------------------
+  -- SCRATCHPADS
+    , ("M1-C-<Return>", namedScratchpadAction scratchpads "terminal")
+
+      ]
+------------------------------------------------------------------
 ------                        MAIN                           ------               
 -------------------------------------------------------------------
 
@@ -511,11 +411,11 @@ main = do
         , ppExtras  = [windowCount] 
         , ppOrder   = \(ws:l:t:ex) -> [ws, l]++ex++[t]
         }
-        }
+        } `additionalKeysP` s_Keys 
 
 defaults = def {
       -- simple stuff
-        terminal           = myTerminal,
+        terminal           = s_Term,
         focusFollowsMouse  = myFocusFollowsMouse,
         clickJustFocuses   = myClickJustFocuses,
         borderWidth        = myBorderWidth,
@@ -525,8 +425,8 @@ defaults = def {
         focusedBorderColor = myFocusedBorderColor,
 
       -- key bindings
-        keys               = myKeys,
-        mouseBindings      = myMouseBindings,
+     --   keys               = myKeys,
+     --   mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
         layoutHook         = showWName' myshowWNameTheme $ myLayout,
@@ -536,53 +436,3 @@ defaults = def {
         startupHook        = myStartupHook
     }
 
--- | Finally, a copy of the default bindings in simple textual tabular format.
-help :: String
-help = unlines ["The default modifier key is 'alt'. Default keybindings:",
-    "",
-    "-- launching and killing programs",
-    "mod-Shift-Enter  Launch xterminal",
-    "mod-p            Launch dmenu",
-    "mod-Shift-p      Launch gmrun",
-    "mod-Shift-c      Close/kill the focused window",
-    "mod-Space        Rotate through the available layout algorithms",
-    "mod-Shift-Space  Reset the layouts on the current workSpace to default",
-    "mod-n            Resize/refresh viewed windows to the correct size",
-    "",
-    "-- move focus up or down the window stack",
-    "mod-Tab        Move focus to the next window",
-    "mod-Shift-Tab  Move focus to the previous window",
-    "mod-j          Move focus to the next window",
-    "mod-k          Move focus to the previous window",
-    "mod-m          Move focus to the master window",
-    "",
-    "-- modifying the window order",
-    "mod-Return   Swap the focused window and the master window",
-    "mod-Shift-j  Swap the focused window with the next window",
-    "mod-Shift-k  Swap the focused window with the previous window",
-    "",
-    "-- resizing the master/slave ratio",
-    "mod-h  Shrink the master area",
-    "mod-l  Expand the master area",
-    "",
-    "-- floating layer support",
-    "mod-t  Push window back into tiling; unfloat and re-tile it",
-    "",
-    "-- increase or decrease number of windows in the master area",
-    "mod-comma  (mod-,)   Increment the number of windows in the master area",
-    "mod-period (mod-.)   Deincrement the number of windows in the master area",
-    "",
-    "-- quit, or restart",
-    "mod-Shift-q  Quit xmonad",
-    "mod-q        Restart xmonad",
-    "mod-[1..9]   Switch to workSpace N",
-    "",
-    "-- Workspaces & screens",
-    "mod-Shift-[1..9]   Move client to workspace N",
-    "mod-{w,e,r}        Switch to physical/Xinerama screens 1, 2, or 3",
-    "mod-Shift-{w,e,r}  Move client to screen 1, 2, or 3",
-    "",
-    "-- Mouse bindings: default actions bound to mouse events",
-    "mod-button1  Set the window to floating mode and move by dragging",
-    "mod-button2  Raise the window to the top of the stack",
-    "mod-button3  Set the window to floating mode and resize by dragging"]
