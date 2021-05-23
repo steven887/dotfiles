@@ -325,7 +325,9 @@ s_Keys =
          , ("M-S-<Return>",                     spawn s_Term2 )
          , ("M-S-v",                             spawn "code" ) 
          , ("M-S-b",                            spawn "brave" )
+         , ("M-C-b",                spawn "brave --incognito" )
          , ("M-S-f",                          spawn "firefox" )
+         , ("M-C-f",         spawn "firefox --private-window" )
          , ("M-p",                            spawn "pcmanfm" )
          , ("M-d",                    spawn "dmenu_run -h 24" )
          
@@ -355,7 +357,7 @@ s_Keys =
         
   -- Layout Toggle
         , ("M-S-t",            sendMessage (T.Toggle "Floats"))
-        , ("M-S-f",                sendMessage $ Toggle NBFULL) -- toggle Full noborders
+        , ("M-f",                  sendMessage $ Toggle NBFULL) -- toggle Full noborders
         , ("M-S-_b",            sendMessage $ Toggle NOBORDERS) -- toggle noBorders
         , ("M-C-t"                  , sendMessage ToggleStruts) -- toggle status bar gap
 
