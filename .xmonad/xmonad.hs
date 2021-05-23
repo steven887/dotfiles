@@ -385,6 +385,9 @@ s_Keys =
     , ("M-S-q",                      io (exitWith ExitSuccess))
     , ("M-q",     spawn "xmonad --recompile; xmonad --restart")
 
+  -- Lockscreen
+    , ("M1-C-l",               spawn "multilockscreen -l blur")
+
   -- SCRATCHPADS
     , ("M1-C-<Return>", namedScratchpadAction scratchpads "terminal")
 
