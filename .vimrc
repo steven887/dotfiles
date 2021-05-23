@@ -25,7 +25,7 @@ set undodir=~/.vim/undodir
 set undofile
 set incsearch
 set termguicolors
-set t_Co=256
+"set t_Co=256
 set encoding=UTF-8
 set laststatus=2
 set guifont=FiraCode\ Nerd\ Font\ Mono\ 10
@@ -42,7 +42,10 @@ set statusline+=%*
 
 call plug#begin()
 Plug 'nathanaelkane/vim-indent-guides'
+"---colorschemes
 Plug 'morhetz/gruvbox'
+Plug 'tyrannicaltoucan/vim-deep-space'
+"-----------------
 Plug 'joshdick/onedark.vim'
 Plug 'Valloric/YouCompleteMe' "auto complete
 Plug 'jiangmiao/auto-pairs'
@@ -77,13 +80,23 @@ call plug#end()
 "\}
 "let g:ale_fix_on_save = 1
 
-" ====== GRUVBOX  ======
-let g:gruvbox_italic=1
-let g:gruvbox_termcolors=256
-let g:gruvbox_transparent_bg=1
-let g:gruvbox_contrast_dark='hard'
-set bg=dark
-colorscheme gruvbox
+"====================== ColorSchemes ======================
+" ============= GRUVBOX  ===========
+"let g:gruvbox_italic=1
+"let g:gruvbox_termcolors=256
+"let g:gruvbox_transparent_bg=1
+"let g:gruvbox_contrast_dark='hard'
+"set bg=dark
+"colorscheme gruvbox
+"===================================
+
+" ============= Deep Space ========
+set background=dark
+let g:deepspace_italics=1
+let g:airline_theme='deep_space'
+let g:lightline = { 'colorscheme': 'deepspace' }
+colorscheme deep-space
+"=========================================================
 
 "colorscheme elflord
 
