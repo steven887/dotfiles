@@ -53,7 +53,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.SimplestFloat
-
+import XMonad.Layout.Tabbed
 
 -------------------------------------------------------------------
 ------                 LAYOUTS MODIFIERS                     ------
@@ -109,6 +109,9 @@ myModMask = mod4Mask
 altMask :: KeyMask
 altMask = mod1Mask
 
+-- Fonts
+myFont :: String
+myFont = "xft:JetBrainsMono Nerd Font:pixelsize=10:Bold:antialias=true"
 
 -- Set your workspaces
 --myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
@@ -177,7 +180,8 @@ myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?
            tall         ||| 
            grid         |||
            mirror       |||
-           threeCol 
+           threeCol     |||
+           tab
            )            ||| 
            noBorders Full
 
@@ -203,10 +207,24 @@ myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?
                $ mySpacing 8
                $ ThreeCol 1 (3/100) (1/2)
 
+    tab      = renamed [Replace "Tabs"]
+               $ tabbed shrinkText myTabConfig 
+
 --    monocle = renamed [Replace "monocle"]
 --              $ smartBorders
 --              $ subLayout [] (smartBorders Simplest)
 --              $ Full
+
+
+--- tabTheme config for tabbed layout ---
+myTabConfig = def { fontName          =  myFont 
+               , activeColor          = "#0CBCF7"
+               , inactiveColor        = "#373b41" 
+               , activeBorderColor    = "#0CBCF7"
+               , inactiveBorderColor  = "#373b41"
+               , activeTextColor      = "#ffffff"
+               , inactiveTextColor    = "#666666"
+               }
 
 
 windowCount :: X (Maybe String)
