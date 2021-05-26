@@ -372,6 +372,8 @@ s_Keys =
 
   -- Media Keys / Extra Keys
 
+    , ("<Print>", spawn "scrot 'scrot-%Y-%m-%d_$wx$h.png' -s -e 'mv $f ~/screenshoots'")
+
     , ("<XF86Tools>",                  spawn "spotify-adblock")
     , ("<XF86AudioPlay>",         spawn "playerctl play-pause")
     , ("<XF86AudioStop>",               spawn "playerctl stop")
