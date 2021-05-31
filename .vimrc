@@ -50,9 +50,15 @@ Plug 'joshdick/onedark.vim'
 Plug 'Valloric/YouCompleteMe' "auto complete
 Plug 'jiangmiao/auto-pairs'
 Plug 'Vimjas/vim-python-pep8-indent'
-"Plug 'dense-analysis/ale'
+Plug 'dense-analysis/ale'
 Plug 'vimwiki/vimwiki'
+"---nerdtree 
 Plug 'preservim/nerdtree'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'preservim/nerdtree' |
+            \ Plug 'Xuyuanp/nerdtree-git-plugin'
+"-------------------------------------------------
+Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
 Plug 'itchyny/lightline.vim'
 Plug 'vifm/vifm.vim'
@@ -61,7 +67,10 @@ Plug 'preservim/nerdcommenter' "to give a comment
 Plug 'junegunn/fzf.vim' "fuzzy finder
 Plug 'adelarsq/vim-matchit'
 Plug 'vim-python/python-syntax'
+"===== autocomplete & snippets 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'prabirshrestha/vim-lsp'
+"============================================
 Plug 'ap/vim-css-color'
 Plug 'chrisbra/colorizer'
 Plug 'neovimhaskell/haskell-vim'
@@ -70,8 +79,25 @@ Plug 'artanikin/vim-synthwave84'
 "Plug 'bitc/vim-hdevtools'
 "### Vim language packs ###
 Plug 'sheerun/vim-polyglot'
+"----------- Snippets - Vsnip -----------
+"Plug 'hrsh7th/vim-vsnip'
+"Plug 'hrsh7th/vim-vsnip-integ'
+"shell snipp
+"Plug 'yousefvand/shellman'
+"Plug 'rafamadriz/friendly-snippets'
 call plug#end()
 
+let g:ale_linters = {
+    \ 'sh': ['language_server'],
+    \ }
+
+if executable('bash-language-server')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'bash-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
+        \ 'allowlist': ['sh'],
+        \ })
+endif
 
 "ale plugin
 "let g:ale_fixers = {
@@ -107,6 +133,7 @@ let g:AutoPairsFlyMode=1
 
 "Re-binding esc key to kj
 inoremap kj <Esc>
+
 
 "set leader key to <space>
 let mapleader = "\<space>"
@@ -161,4 +188,92 @@ let g:hdevtools_options = '-g-fdefer-type-errors'
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
+" ---- Nerdtree syntax highlighting Configuration ----
+"let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1
+"let g:WebDevIconsDisableDefaultFileSymbolColorFromNERDTreeFile = 1
+
+" ------ Nerdtree git plugin --------------
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'✹',
+                \ 'Staged'    :'✚',
+                \ 'Untracked' :'✭',
+                \ 'Renamed'   :'➜',
+                \ 'Unmerged'  :'═',
+                \ 'Deleted'   :'✖',
+                \ 'Dirty'     :'✗',
+                \ 'Ignored'   :'☒',
+                \ 'Clean'     :'✔︎',
+                \ 'Unknown'   :'?',
+                \ }
+
+let g:NERDTreeGitStatusUseNerdFonts = 1 " you should install nerdfonts by yourself. default: 0
+let g:NERDTreeGitStatusShowIgnored = 1 " a heavy feature may cost much more time. default: 0
+let g:NERDTreeGitStatusUntrackedFilesMode = 'all' " a heave feature too. default: normal
+"let g:NERDTreeGitStatusGitBinPath = '/your/file/path' " default: git (auto find in path)
+"let g:NERDTreeGitStatusShowClean = 1 " default: 0
+"let g:NERDTreeGitStatusConcealBrackets = 1 " default: 0
+
+"================================  Coc Snippets ========== =========================== 
+
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
+
+"Make <tab> used for trigger completion, completion confirm, snippet expand and jump like VSCode.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+"=======================================================================================================
+
+"----------------------------- Vim VSNIP config ----------------------------------
+"NOTE: You can use other key to expand snippet.
+" Expand
+"imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+"smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+
+"" Expand or jump
+"imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+"smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
+"" Jump forward or backward
+"imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+"smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+"imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+"smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
+"" Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
+"" See https://github.com/hrsh7th/vim-vsnip/pull/50
+"nmap        s   <Plug>(vsnip-select-text)
+"xmap        s   <Plug>(vsnip-select-text)
+"nmap        S   <Plug>(vsnip-cut-text)
+"xmap        S   <Plug>(vsnip-cut-text)
+
+"" If you want to use snippet for multiple filetypes, you can `g:vsnip_filetypes` for it.
+"let g:vsnip_filetypes = {}
+""let g:vsnip_filetypes.javascriptreact = ['javascript']
+""let g:vsnip_filetypes.typescriptreact = ['typescript']
+"===================================================================================================
 
