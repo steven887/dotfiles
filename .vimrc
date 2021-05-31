@@ -27,7 +27,7 @@ set incsearch
 set termguicolors
 "set t_Co=256
 set encoding=UTF-8
-set laststatus=2
+set laststatus=2 "for lightline"
 set guifont=FiraCode\ Nerd\ Font\ Mono\ 10
 
 "### syntastic plugin config ###
@@ -52,6 +52,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'dense-analysis/ale'
 Plug 'vimwiki/vimwiki'
+
 "---nerdtree 
 Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -119,9 +120,8 @@ endif
 " ============= Deep Space ========
 set background=dark
 let g:deepspace_italics=1
-let g:airline_theme='deep_space'
 let g:lightline = { 'colorscheme': 'deepspace' }
-colorscheme deep-space
+colorscheme synthwave84
 "=========================================================
 
 "colorscheme elflord
