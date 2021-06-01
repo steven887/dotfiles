@@ -85,6 +85,7 @@ Plug 'sheerun/vim-polyglot'
 "shell snipp
 "Plug 'yousefvand/shellman'
 "Plug 'rafamadriz/friendly-snippets'
+Plug 'voldikss/vim-floaterm'
 call plug#end()
 
 let g:ale_linters = {
@@ -288,3 +289,8 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR
 ""let g:vsnip_filetypes.typescriptreact = ['typescript']
 "===================================================================================================
 
+"------------------ FLoatTerm keymap ------------------------------
+let g:floaterm_keymap_new    = '<F7>'
+let g:floaterm_keymap_prev   = '<F8>'
+let g:floaterm_keymap_next   = '<F9>'
+let g:floaterm_keymap_toggle = '<F10>'
