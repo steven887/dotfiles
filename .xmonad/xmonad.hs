@@ -179,7 +179,7 @@ myshowWNameTheme = def
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
-myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?? EOT) $ T.toggleLayouts floats $ avoidStruts  (
+myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?? EOT) $ T.toggleLayouts tab $ avoidStruts  (
            --monocle      |||
            tall         ||| 
            grid         |||
@@ -336,79 +336,81 @@ scratchpads = [ NS "terminal" spawnSt findSt stLayout
 s_Keys :: [(String, X ())]
 s_Keys =
    -- Apps Section
-         [ ("C-S-<Return>",                     spawn s_Term  )
-         , ("M-S-<Return>",                     spawn s_Term2 )
-         , ("M-S-v",                             spawn "code" ) 
-         , ("M-S-b",                            spawn "brave" )
-         , ("M-C-b",                spawn "brave --incognito" )
-         , ("M-S-f",                          spawn "firefox" )
-         , ("M-C-f",         spawn "firefox --private-window" )
-         , ("M-p",                            spawn "pcmanfm" )
-         , ("M-d",                    spawn "dmenu_run -h 24" )
-         
+         [ ( "C-S-<Return>",                     spawn s_Term  )
+         , ( "M-S-<Return>",                     spawn s_Term2 )
+         , ( "M1-C-v",                            spawn "code" ) 
+         , ( "M1-C-q",                     spawn "qutebrowser" )
+         , ( "M1-C-b",                           spawn "brave" )
+         , ( "M-C-b",                spawn "brave --incognito" )
+         , ( "M1-C-f",                         spawn "firefox" )
+         , ( "M-C-f",         spawn "firefox --private-window" )
+         , ( "M-p",                            spawn "pcmanfm" )
+         , ( "M-d",                    spawn "dmenu_run -h 24" )
+
   -- Window Section
   -- Kill windows
-        , ("M-S-c",                                      kill )
-        , ("M-S-a",                                   killAll )
+        , ( "M-S-c",                                      kill )
+        , ( "M-S-a",                                   killAll )
 
   -- Window Resizing      
-        , ("M-h",                          sendMessage Shrink )
-        , ("M-l",                           sendMessage Expand)
-        , ("M-M1-j",                  sendMessage MirrorShrink)
-        , ("M-M1-k",                  sendMessage MirrorExpand)
+        , ( "M-h",                          sendMessage Shrink )
+        , ( "M-l",                          sendMessage Expand )
+        , ( "M-M1-j",                 sendMessage MirrorShrink )
+        , ( "M-M1-k",                 sendMessage MirrorExpand )
 
   -- Window Focus
-        , ("M1-<Tab>",                     windows W.focusDown)
-        , ("M-j",                          windows W.focusDown)
-        , ("M-k",                          windows W.focusUp  )
-        , ("M-m",                       windows W.focusMaster )
-        , ("M-<Return>",                  windows W.swapMaster)
-        , ("M-S-j",                        windows W.swapDown )
-        , ("M-S-k",                          windows W.swapUp )
+        , ( "M1-<Tab>",                    windows W.focusDown )
+        , ( "M-j",                         windows W.focusDown )
+        , ( "M-k",                           windows W.focusUp )
+        , ( "M-m",                       windows W.focusMaster )
+        , ( "M-<Return>",                 windows W.swapMaster )
+        , ( "M-S-j",                        windows W.swapDown )
+        , ( "M-S-k",                          windows W.swapUp )
 
   -- Window push back into tiling/float
-        , ("M-t",               withFocused $ windows . W.sink) -- push from floating windows back to tile
-        , ("M-S-t",                                   sinkAll ) -- push all floating windows back to tile
+        , ( "M-t",              withFocused $ windows . W.sink ) -- push from floating windows back to tile
+        , ( "M-C-t",                                   sinkAll ) -- push all floating windows back to tile
         
   -- Layout Toggle
-        , ("M1-f",            sendMessage (T.Toggle "Floats"))
-        , ("M1-t",            sendMessage (T.Toggle "Tabs"))
-        , ("M-f",                  sendMessage $ Toggle NBFULL) -- toggle Full noborders
-        , ("M-b",            sendMessage $ Toggle NOBORDERS) -- toggle noBorders
-        , ("M-C-t"                  , sendMessage ToggleStruts) -- toggle status bar gap
+        --, ("M1-f",             sendMessage (T.Toggle "Floats"))
+        , ( "M-S-t",              sendMessage (T.Toggle "Tabs") )
+        , ( "M-f",                  sendMessage $ Toggle NBFULL ) -- toggle Full noborders
+        , ( "M-b",               sendMessage $ Toggle NOBORDERS ) -- toggle noBorders
+        , ( "M-C-t"                  , sendMessage ToggleStruts ) -- toggle status bar gap
 
   -- Changging Layout
   
-       , ("M-<Tab>",                   sendMessage NextLayout )
-      -- , ("M-S-<space>",   setLayout $ XMonad.layoutHook conf )
+       , ( "M-<Tab>",                   sendMessage NextLayout )
+      -- , ("M-S-<space>",   setLayout $ XMonad.layoutHook conf)
         
   -- Increase / Decrease Master
-        , ("M-,",                   sendMessage (IncMasterN 1))
-        , ("M-.",                sendMessage (IncMasterN (-1)))
+        , ( "M-,",                  sendMessage (IncMasterN 1) )
+        , ( "M-.",               sendMessage (IncMasterN (-1)) )
 
   -- Media Keys / Extra Keys
 
-    --, ("<Print>", spawn "scrot 'scrot-%Y-%m-%d_$wx$h.png' -s -e 'mv $f ~/screenshots'")
-    , ("<Print>", spawn "scrot  -szf -e '  ~/steven_data/dropshadow.sh $f'")
-    , ("<XF86Tools>", namedScratchpadAction scratchpads "spotify")
-    , ("<XF86AudioPlay>",            spawn "playerctl play-pause")
-    , ("<XF86AudioStop>",                  spawn "playerctl stop")
-    , ("<XF86AudioNext>",                  spawn "playerctl next")
-    , ("<XF86AudioPrev>",              spawn "playerctl previous")
-    , ("<XF86AudioMute>",        spawn "amixer set Master toggle")
-    , ("<XF86AudioLowerVolume>",    spawn "amixer set Master 2%-")
-    , ("<XF86AudioRaiseVolume>",    spawn "amixer set Master 2%+")
+    , ("<Print>", spawn "scrot -szf -e ' ~/steven_data/screenshots.sh $f'" )
+    , ("<XF86MonBrightnessUp>",                         spawn "lux -a 10%" )
+    , ("<XF86MonBrightnessDown>",                       spawn "lux -s 10%" )
+    , ("<XF86Tools>",          namedScratchpadAction scratchpads "spotify" )
+    , ("<XF86AudioPlay>",                     spawn "playerctl play-pause" )
+    , ("<XF86AudioStop>",                           spawn "playerctl stop" )
+    , ("<XF86AudioNext>",                           spawn "playerctl next" )
+    , ("<XF86AudioPrev>",                       spawn "playerctl previous" )
+    , ("<XF86AudioMute>",                 spawn "amixer set Master toggle" )
+    , ("<XF86AudioLowerVolume>",             spawn "amixer set Master 2%-" )
+    , ("<XF86AudioRaiseVolume>",             spawn "amixer set Master 2%+" )
 
   -- XMonad
-    , ("M-S-q",                      io (exitWith ExitSuccess))
-    , ("M-q",     spawn "xmonad --recompile; xmonad --restart")
+    , ( "M-S-q",                                 io (exitWith ExitSuccess) )
+    , ( "M-q",                spawn "xmonad --recompile; xmonad --restart" )
 
   -- Lockscreen
-    , ("M1-C-l",               spawn "multilockscreen -l blur")
+    , ("M1-C-l",                           spawn "multilockscreen -l blur" )
 
   -- SCRATCHPADS
-    , ("M1-C-<Return>", namedScratchpadAction scratchpads "terminal")
-    , ("M-C-s",          namedScratchpadAction scratchpads "spotify")
+    , ("M1-C-<Return>",       namedScratchpadAction scratchpads "terminal" )
+    , ("M1-C-s",               namedScratchpadAction scratchpads "spotify" )
 
       ]
 ------------------------------------------------------------------
