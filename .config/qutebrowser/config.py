@@ -2067,11 +2067,11 @@ c.content.blocking.method = 'adblock'
 
 ## Default zoom level.
 ## Type: Perc
-# c.zoom.default = '100%'
+c.zoom.default = '100%'
 
 ## Available zoom levels.
 ## Type: List of Perc
-# c.zoom.levels = ['25%', '33%', '50%', '67%', '75%', '90%', '100%', '110%', '125%', '150%', '175%', '200%', '250%', '300%', '400%', '500%']
+c.zoom.levels = ['25%', '33%', '50%', '67%', '75%', '90%', '100%', '110%', '125%', '150%', '175%', '200%', '250%', '300%', '400%', '500%']
 
 ## Number of zoom increments to divide the mouse wheel movements to.
 ## Type: Int
@@ -2085,8 +2085,10 @@ c.content.blocking.method = 'adblock'
 config.bind('xs', 'config-cycle statusbar.show always never')
 config.bind('xt', 'config-cycle tabs.show always never')
 config.bind('xx', 'config-cycle tabs.show always never;; config-cycle statusbar.show always never')
+config.bind('<Ctrl-m>', 'spawn mpv --volume=50 {url}')
+config.bind('<Ctrl-y>', 'hint links spawn mpv --volume=50 {hint-url}')
 # config.bind("'", 'mode-enter jump_mark')
-# config.bind('+', 'zoom-in')
+config.bind('+', 'zoom')
 # config.bind('-', 'zoom-out')
 # config.bind('.', 'repeat-command')
 # config.bind('/', 'set-cmd-text /')
@@ -2145,7 +2147,7 @@ config.bind('xx', 'config-cycle tabs.show always never;; config-cycle statusbar.
 # config.bind('<Return>', 'selection-follow')
 # config.bind('<back>', 'back')
 # config.bind('<forward>', 'forward')
-# config.bind('=', 'zoom')
+config.bind('=', 'zoom-in')
 # config.bind('?', 'set-cmd-text ?')
 # config.bind('@', 'macro-run')
 # config.bind('B', 'set-cmd-text -s :quickmark-load -t')
