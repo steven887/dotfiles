@@ -336,16 +336,17 @@ scratchpads = [ NS "terminal" spawnSt findSt stLayout
 s_Keys :: [(String, X ())]
 s_Keys =
    -- Apps Section
-         [ ( "C-S-<Return>",                     spawn s_Term  )
-         , ( "M-S-<Return>",                     spawn s_Term2 )
-         , ( "M1-C-v",                            spawn "code" ) 
-         , ( "M1-C-q",                     spawn "qutebrowser" )
-         , ( "M1-C-b",                           spawn "brave" )
-         , ( "M-C-b",                spawn "brave --incognito" )
-         , ( "M1-C-f",                         spawn "firefox" )
-         , ( "M-C-f",         spawn "firefox --private-window" )
-         , ( "M-p",                            spawn "pcmanfm" )
-         , ( "M-d",                    spawn "dmenu_run -h 24" )
+         [ ( "C-S-<Return>",                        spawn s_Term  )
+         , ( "M-S-<Return>",                        spawn s_Term2 )
+         , ( "M1-C-v",                               spawn "code" ) 
+         , ( "M1-C-q",                        spawn "qutebrowser" )
+         , ( "M1-C-b",                              spawn "brave" )
+         , ( "M-C-b",                   spawn "brave --incognito" )
+         , ( "M1-C-f",                            spawn "firefox" )
+         , ( "M-C-f",            spawn "firefox --private-window" )
+         , ( "M-p",                               spawn "pcmanfm" )
+         , ( "M-d",                       spawn "dmenu_run -h 24" )
+         , ( "M-<Space>", spawn "dmenu_run -c -l 20 -bw 2  -i -p 'Run :'")
 
   -- Window Section
   -- Kill windows
