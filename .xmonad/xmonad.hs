@@ -258,8 +258,8 @@ windowCount =
 -- doRectFloat :: W.RationalRect -> ManageHook
 
 myManageHook = composeAll
-    [ className =? "MPlayer"            -->   doFloat
-    , className =? "Gimp"               -->   doFloat
+    [
+     className =? "Gimp"               -->   doFloat
     --, resource  =? "desktop_window"     -->   doIgnore
     --, resource  =? "kdesktop"           -->   doIgnore 
     , className =? "xdman-Main"         -->   doFloat
@@ -272,6 +272,7 @@ myManageHook = composeAll
    , className =? "Blueman-manager"         -?>  doCenterFloat  
    , className =? "Pavucontrol"             -?>  doCenterFloat  
    , className =? "Nm-connection-editor"    -?>  doCenterFloat  
+   , className =? "mpv"                     -?>  doRectFloat $ W.RationalRect (0.1)(0.1)(0.8)(0.8)
   -- , className =? "Spotify"                 -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
 --,className =? "xdman-Main"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
    ]
