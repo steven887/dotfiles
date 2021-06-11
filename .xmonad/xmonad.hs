@@ -1,3 +1,11 @@
+{-
+ - File              : xmonad.hs
+ - License           : MIT
+ - Author            : Steven Agustinus <steven87.ags@gmail.com>
+ - Date              : 12.06.2021
+ - Last Modified Date: 12.06.2021
+ - Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
+ -}
 
 -- ##################################################################
 --      _____ ___                                                  ##
@@ -346,8 +354,9 @@ s_Keys =
          , ( "M1-C-f",                            spawn "firefox" )
          , ( "M-C-f",            spawn "firefox --private-window" )
          , ( "M-p",                               spawn "pcmanfm" )
-         , ( "M-d",                       spawn "dmenu_run -h 24" )
+         --, ( "M-d",                       spawn "dmenu_run -h 24" )
          , ( "M-<Space>", spawn "dmenu_run -c -l 20 -bw 2  -i -p 'Run :'")
+         , ( "M-d t", spawn "/home/steven/mygithub/dmenu-scripts/tv")
 
   -- Window Section
   -- Kill windows
