@@ -3,7 +3,7 @@
  - License           : MIT
  - Author            : Steven Agustinus <steven87.ags@gmail.com>
  - Date              : 12.06.2021
- - Last Modified Date: 12.06.2021
+ - Last Modified Date: 15.06.2021
  - Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
  -}
 
@@ -345,18 +345,19 @@ scratchpads = [ NS "terminal" spawnSt findSt stLayout
 s_Keys :: [(String, X ())]
 s_Keys =
    -- Apps Section
-         [ ( "C-S-<Return>",                        spawn s_Term  )
-         , ( "M-S-<Return>",                        spawn s_Term2 )
-         , ( "M1-C-v",                               spawn "code" ) 
-         , ( "M1-C-q",                        spawn "qutebrowser" )
-         , ( "M1-C-b",                              spawn "brave" )
-         , ( "M-C-b",                   spawn "brave --incognito" )
-         , ( "M1-C-f",                            spawn "firefox" )
-         , ( "M-C-f",            spawn "firefox --private-window" )
-         , ( "M-p",                               spawn "pcmanfm" )
-         --, ( "M-d",                       spawn "dmenu_run -h 24" )
-         , ( "M-<Space>", spawn "dmenu_run -c -l 20 -bw 2  -i -p 'Run :'")
-         , ( "M-d t", spawn "/home/steven/mygithub/dmenu-scripts/tv")
+         [ ( "C-S-<Return>",                                   spawn s_Term  )
+         , ( "M-S-<Return>",                                   spawn s_Term2 )
+         , ( "M1-C-v",                                          spawn "code" ) 
+         , ( "M1-C-q",                                   spawn "qutebrowser" )
+         , ( "M1-C-b",                                         spawn "brave" )
+         , ( "M-C-b",                              spawn "brave --incognito" )
+         , ( "M1-C-f",                                       spawn "firefox" )
+         , ( "M-C-f",                       spawn "firefox --private-window" )
+         , ( "M-p",                                          spawn "pcmanfm" )
+         --, ( "M-d",                                spawn "dmenu_run -h 24" )
+         , ( "M-<Space>",     spawn "dmenu_run -c -l 20 -bw 2  -i -p 'Run :'")
+         , ( "M-d t",                 spawn "$HOME/mygithub/dmenu-scripts/tv")
+         , ( "M-d c",        spawn "$HOME/mygithub/dmenu-scripts/edit-config")
 
   -- Window Section
   -- Kill windows
