@@ -1,3 +1,17 @@
+" File              : .vimrc
+" License           : MIT
+" Author            : Steven Agustinus <steven87.ags@gmail.com>
+" Date              : 11.06.2021
+" Last Modified Date: 11.06.2021
+" Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
+" File              : .vimrc
+" Author            : Steven Agustinus <steven87.ags@gmail.com>
+" Date              : 11.06.2021
+" Last Modified Date: 11.06.2021
+" Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
+" File              : .vimrc
+" Date              : 11.06.2021
+" Last Modified Date: 11.06.2021
 " #######################################################
 "      _____ ___                                        #
 "     / ___//   |    # My Personal Config               #
@@ -86,6 +100,7 @@ Plug 'sheerun/vim-polyglot'
 "Plug 'yousefvand/shellman'
 "Plug 'rafamadriz/friendly-snippets'
 Plug 'voldikss/vim-floaterm'
+Plug 'alpertuna/vim-header'
 call plug#end()
 
 let g:ale_linters = {
@@ -294,3 +309,17 @@ let g:floaterm_keymap_new    = '<F7>'
 let g:floaterm_keymap_prev   = '<F8>'
 let g:floaterm_keymap_next   = '<F9>'
 let g:floaterm_keymap_toggle = '<F10>'
+
+"================ Vim Header =======================
+
+let g:header_field_author = 'Steven Agustinus'
+let g:header_field_author_email = "steven87.ags@gmail.com"
+let g:header_field_license_id = 'MIT'
+nnoremap <leader>h :AddHeader<CR>
+"add license
+"=== GNU GP License v3 ( GPL )===
+nnoremap <leader>lg :AddGNULicense<CR> 
+"=== MIT License ===
+nnoremap <leader>lm :AddMITLicense<CR>
+
+
