@@ -2,7 +2,7 @@
 " License           : MIT
 " Author            : Steven Agustinus <steven87.ags@gmail.com>
 " Date              : 11.06.2021
-" Last Modified Date: 11.06.2021
+" Last Modified Date: 23.06.2021
 " Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
 " File              : .vimrc
 " Author            : Steven Agustinus <steven87.ags@gmail.com>
@@ -42,7 +42,8 @@ set termguicolors
 "set t_Co=256
 set encoding=UTF-8
 set laststatus=2 "for lightline"
-set guifont=FiraCode\ Nerd\ Font\ Mono\ 10
+"set guifont=FiraCode\ Nerd\ Font\ Mono\ 10
+set guifont=Fira\ Code\ iScript\ 10
 
 "### syntastic plugin config ###
 set statusline+=%#warningmsg#
@@ -101,6 +102,7 @@ Plug 'sheerun/vim-polyglot'
 "Plug 'rafamadriz/friendly-snippets'
 Plug 'voldikss/vim-floaterm'
 Plug 'alpertuna/vim-header'
+Plug 'tweekmonster/startuptime.vim'
 call plug#end()
 
 let g:ale_linters = {
@@ -311,10 +313,10 @@ let g:floaterm_keymap_next   = '<F9>'
 let g:floaterm_keymap_toggle = '<F10>'
 
 "================ Vim Header =======================
-
-let g:header_field_author = 'Steven Agustinus'
-let g:header_field_author_email = "steven87.ags@gmail.com"
-let g:header_field_license_id = 'MIT'
+let g:header_auto_add_header = 0
+"let g:header_field_author = 'Steven Agustinus'
+"let g:header_field_author_email = "steven87.ags@gmail.com"
+"let g:header_field_license_id = 'MIT'
 nnoremap <leader>h :AddHeader<CR>
 "add license
 "=== GNU GP License v3 ( GPL )===

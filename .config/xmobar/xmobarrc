@@ -125,7 +125,7 @@ Config {
                              , ("us"         , "<fc=#8B0000>US</fc>")
                              ]
            -- volume indicator 
-           , Run Volume "default" "Master" ["--template", "<fn=1><fc=#0CBCF7> \xf7ca </fc></fn><fc=#9fffff><volume>%</fc> <status>"
+           , Run Volume "default" "Master" ["--template", "<fn=1><fc=#0CBCF7>\xf7ca </fc></fn><fc=#9fffff><volume>%</fc> <status>"
                                            , "--" -- volume status
                                                   -- status on 
                                                   , "-O","<fc=#0febff>[On]</fc> "
