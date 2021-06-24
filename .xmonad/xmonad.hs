@@ -3,7 +3,7 @@
  - License           : MIT
  - Author            : Steven Agustinus <steven87.ags@gmail.com>
  - Date              : 12.06.2021
- - Last Modified Date: 15.06.2021
+ - Last Modified Date: 18.06.2021
  - Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
  -}
 
@@ -272,7 +272,8 @@ myManageHook = composeAll
     --, resource  =? "kdesktop"           -->   doIgnore 
     , className =? "xdman-Main"         -->   doFloat
     , className =? "kitty"              -->   hasBorder False
-
+    , className =? "Key-mon"            -->   doIgnore 
+    , className =? "Key-mon"            -->   hasBorder False 
     ]
    <+>composeOne
    [
@@ -358,6 +359,7 @@ s_Keys =
          , ( "M-<Space>",     spawn "dmenu_run -c -l 20 -bw 2  -i -p 'Run :'")
          , ( "M-d t",                 spawn "$HOME/mygithub/dmenu-scripts/tv")
          , ( "M-d c",        spawn "$HOME/mygithub/dmenu-scripts/edit-config")
+         , ( "M-d s",    spawn "$HOME/mygithub/dmenu-scripts/screen-recorder")
 
   -- Window Section
   -- Kill windows
