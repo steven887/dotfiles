@@ -314,9 +314,9 @@ let g:floaterm_keymap_toggle = '<F10>'
 
 "================ Vim Header =======================
 let g:header_auto_add_header = 0
-"let g:header_field_author = 'Steven Agustinus'
-"let g:header_field_author_email = "steven87.ags@gmail.com"
-"let g:header_field_license_id = 'MIT'
+let g:header_field_author = 'Steven Agustinus'
+let g:header_field_author_email = "steven87.ags@gmail.com"
+let g:header_field_license_id = 'MIT'
 nnoremap <leader>h :AddHeader<CR>
 "add license
 "=== GNU GP License v3 ( GPL )===

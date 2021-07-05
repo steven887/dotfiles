@@ -1,11 +1,3 @@
-{-
- - File              : xmonad.hs
- - License           : MIT
- - Author            : Steven Agustinus <steven87.ags@gmail.com>
- - Date              : 12.06.2021
- - Last Modified Date: 18.06.2021
- - Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
- -}
 
 -- ##################################################################
 --      _____ ___                                                  ##
@@ -32,8 +24,13 @@ import System.IO (hPutStrLn)
 import Data.Maybe (fromJust)
 import Data.Maybe (isJust)
 import qualified Data.Map as M
-import Data.Monoid
+import Data.Monoid 
 import Data.Ratio
+
+--import System.Posix.Files
+--import XMonad.Util.XSelection
+--import Data.Set (fromList, toList)
+--import XMonad.Util.Types
 
 -------------------------------------------------------------------
 ------                        UTILLITIES                     ------               
@@ -79,12 +76,27 @@ import XMonad.Layout.SubLayouts
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(Toggle))
+
 -------------------------------------------------------------------
 ------                         ACTIONS                       ------
 -------------------------------------------------------------------
 import XMonad.Actions.MouseResize
 import XMonad.Actions.OnScreen
 import XMonad.Actions.WithAll
+
+
+-------------------------------------------------------------------
+------                         PROMPT                        ------
+-------------------------------------------------------------------
+import XMonad.Prompt (XPrompt(showXPrompt), mkXPrompt, XPConfig(searchPredicate))
+import XMonad.Prompt.Man
+import XMonad.Prompt.XMonad
+import XMonad.Prompt.Shell (shellPrompt)
+import XMonad.Prompt.Ssh
+import Control.Arrow (( &&& ), first)
+import XMonad.Prompt.FuzzyMatch
+import XMonad.Prompt
+import XMonad.Prompt.AppLauncher as AL
 
 ------------------ # End Import Section # -------------------------
 -------------------------------------------------------------------
@@ -124,6 +136,64 @@ altMask = mod1Mask
 -- Fonts
 myFont :: String
 myFont = "xft:JetBrainsMono Nerd Font:pixelsize=10:Bold:antialias=true"
+
+--- XPKEYMAP
+s_XPKeymap :: M.Map (KeyMask,KeySym) (XP ())
+s_XPKeymap  = M.fromList $
+  map (first $ (,) controlMask) -- control + <key> 0
+  [  (xK_u, killBefore)
+  , (xK_k, killAfter)
+  , (xK_a, startOfLine)
+  , (xK_e, endOfLine)
+  , (xK_y, pasteString)
+  , (xK_Right, moveWord Next )
+  , (xK_Left, moveCursor Prev)
+  , (xK_Delete, killWord Next)
+  , (xK_BackSpace, killWord Prev)
+  , (xK_w, killWord Prev)
+  , (xK_g, quit)
+  , (xK_bracketleft, quit)
+  ] ++
+  map (first $ (,) 0)
+  [ (xK_Return, setSuccess True >> setDone True)
+  , (xK_KP_Enter, setSuccess True >> setDone True)
+  , (xK_BackSpace, deleteString Prev)
+  , (xK_Delete, deleteString Next)
+  , (xK_Left, moveCursor Prev)
+  , (xK_Right, moveCursor Next)
+  , (xK_Home, startOfLine)
+  , (xK_End, endOfLine)
+  , (xK_Down, moveHistory W.focusUp')
+  , (xK_Up, moveHistory W.focusDown')
+  , (xK_Escape, quit)
+  ]
+
+isPrefixOf :: Eq a => [a] -> [a] -> Bool 
+isPrefixOf [] _         =  True
+isPrefixOf _  []        =  False
+isPrefixOf (x:xs) (y:ys)=  x == y && isPrefixOf xs ys
+
+---- XPconfig
+s_XPConfig = def 
+  { font                = "xft:JetBrainsMono Nerd Font:pixelsize=10:Bold:antialias=true" 
+  , bgColor             = "grey22" 
+  , fgColor             = "grey80"
+  , bgHLight            = "grey"
+  , fgHLight            = "black"
+  , borderColor         = "white"
+  , promptBorderWidth   = 1
+  , promptKeymap        = s_XPKeymap
+  , position            = CenteredAt 0.2 0.5 
+  , height              = 24
+  , historySize         = 256
+  , historyFilter       = id
+  , defaultText         = [] 
+  , autoComplete        = Just 100000 
+  , showCompletionOnTab = False 
+  , searchPredicate     = isPrefixOf 
+  , alwaysHighlight     = True
+  , maxComplRows        = Just 10 
+ }
 
 -- Set your workspaces
 --myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
@@ -313,6 +383,9 @@ myStartupHook = do
    spawnOnce "nitrogen --restore &"
    spawnOnce "picom &"
    spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 127 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 &"
+--   spawnOnce "xwinwrap -g 1366x768+1920+0 -ni -s -nf -b -un -ov -fdt -argb -- mpv --mute=yes --no-audio --no-osc --no-osd-bar --quiet --screen=0 --geometry=1366x768+1920+0 --loop -wid WID  --panscan=1.0  /home/steven/steven_data/video_wallpaper/434837.mp4 &"
+--   spawnOnce "xwinwrap -g 1920x1080+0+0 -ni -s -nf -b -un -ov -fdt -argb -- mpv --mute=yes --no-audio --no-osc --no-osd-bar --quiet --screen=0 --geometry=1920x1080+0+0 --loop -wid WID  --panscan=1.0  /home/steven/steven_data/video_wallpaper/434837.mp4 &" 
+
 
 -------------------------------------------------------------------
 ------                     SCRATCHPAD                        ------               
@@ -426,6 +499,12 @@ s_Keys =
     , ("M1-C-<Return>",       namedScratchpadAction scratchpads "terminal" )
     , ("M1-C-s",               namedScratchpadAction scratchpads "spotify" )
 
+  -- PROMPTS
+    , ("M-x",                                       shellPrompt s_XPConfig )
+    -- AppLauncher Prompt
+--    , ("M-a",  AL.launchApp s_XPConfig "inkscape")
+--    , ("M-a",  AL.launchApp def "Nitrogen")
+    , ("M-s",                                       sshPrompt s_XPConfig )
       ]
 ------------------------------------------------------------------
 ------                        MAIN                           ------               
