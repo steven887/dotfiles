@@ -38,7 +38,7 @@ Config {
    , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
    , pickBroadest =     False   -- choose widest display (multi-monitor)
    , persistent =       True    -- enable/disable hiding (True = disabled)
-   , template = "<fc=#7bf9f2>%UnsafeStdinReader%</fc> }{ %default:Master% <fc=#666666>|</fc> %battery% <fc=#666666>|</fc> %multicpu% <fc=#666666>|</fc> %coretemp% <fc=#666666>|</fc> %memory% <fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc> %date% <fc=#666666>|</fc> %trayerpad% " 
+   , template = "<fc=#7bf9f2>%UnsafeStdinReader%</fc> } { %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc>%coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc>%date%<fc=#666666>|</fc><fc=#0CBCF7><fn=3>%recording-stats%</fn></fc> %trayerpad% " 
    --<icon=arch20x20.xpm/><fc=#666666> |</fc> 
    
    -- plugins
@@ -119,6 +119,8 @@ Config {
         -- time and date indicator 
         --   (%F = d-m-y date, %a = day of week, %T = h:m:s time)
         , Run Date           "<fc=#0CBCF7><fn=1> \xf073 </fn></fc> <fc=#9fffff>%a,%e-%b-%Y %R </fc>" "date" 10
+        
+        , Run Com "/home/steven/steven_data/coding_time/recording-stats" [] "recording-stats"  10
 
         -- keyboard layout indicator
         , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
@@ -133,7 +135,13 @@ Config {
                                         ] 10
         -- trayer padding
         , Run Com "/home/steven/.config/xmobar/padding-icon.sh" ["panel"] "trayerpad" 10
-
+      
+       -- MPD
+       -- , Run MPD ["-t", "<state>: <artist> - <track>"] 10
+      
+       --, Run MPD ["-t",
+       --  "<composer> <title> (<album>) <track>/<plength> <statei> [<flags>]",
+       --  "--", "-P", ">>", "-Z", "|", "-S", "><"] 10
         ]
    }
 
