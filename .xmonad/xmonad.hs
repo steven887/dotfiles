@@ -401,6 +401,7 @@ myStartupHook = do
 scratchpads :: [NamedScratchpad]
 scratchpads = [ NS "terminal" spawnSt findSt stLayout
               , NS "spotify" spawnSpotify findSpotify spotifyLayout
+              , NS "ncmpcpp" spawnNcmpcpp findNcmpcpp ncmpcppLayout
               ]
      where
      spawnSt  = s_Term  ++ " -n st-terminal" 
@@ -412,6 +413,9 @@ scratchpads = [ NS "terminal" spawnSt findSt stLayout
      spotifyLayout = customFloating $ W.RationalRect (0.1)(0.1)(0.8)(0.8)
                      --where role = stringProperty "WM_WINDOWS_ROLE"
 
+     spawnNcmpcpp  = s_Term ++ " -e ncmpcpp -S visualizer"
+     findNcmpcpp   = title =? "ncmpcpp"
+     ncmpcppLayout = customFloating $ W.RationalRect (0.2)(0.2)(0.6)(0.6)
 -------------------------------------------------------------------
 ------                     KEY BINDINGS                      ------               
 -------------------------------------------------------------------
@@ -479,14 +483,21 @@ s_Keys =
     , ("<Print>", spawn "scrot -szf -e ' ~/steven_data/screenshots.sh $f'" )
     , ("<XF86MonBrightnessUp>",                         spawn "lux -a 10%" )
     , ("<XF86MonBrightnessDown>",                       spawn "lux -s 10%" )
-    , ("<XF86Tools>",          namedScratchpadAction scratchpads "spotify" )
-    , ("<XF86AudioPlay>",                     spawn "playerctl play-pause" )
-    , ("<XF86AudioStop>",                           spawn "playerctl stop" )
-    , ("<XF86AudioNext>",                           spawn "playerctl next" )
-    , ("<XF86AudioPrev>",                       spawn "playerctl previous" )
-    , ("<XF86AudioMute>",                 spawn "amixer set Master toggle" )
-    , ("<XF86AudioLowerVolume>",             spawn "amixer set Master 2%-" )
-    , ("<XF86AudioRaiseVolume>",             spawn "amixer set Master 2%+" )
+   -- , ("<XF86Tools>",          namedScratchpadAction scratchpads "spotify" )
+   -- , ("<XF86AudioPlay>",                     spawn "playerctl play-pause" )
+   -- , ("<XF86AudioStop>",                           spawn "playerctl stop" )
+   -- , ("<XF86AudioNext>",                           spawn "playerctl next" )
+   -- , ("<XF86AudioPrev>",                       spawn "playerctl previous" )
+   -- , ("<XF86AudioMute>",                 spawn "amixer set Master toggle" )
+   -- , ("<XF86AudioLowerVolume>",             spawn "amixer set Master 2%-" )
+   -- , ("<XF86AudioRaiseVolume>",             spawn "amixer set Master 2%+" )
+    
+    -- ncmpcpp
+    , ("<XF86Tools>",          namedScratchpadAction scratchpads "ncmpcpp" )
+    , ("<XF86AudioPlay>",                          spawn "mpc toggle" )
+    , ("<XF86AudioStop>",                             spawn "mpc stop" )
+    , ("<XF86AudioNext>",                             spawn "mpc next" )
+    , ("<XF86AudioPrev>",                             spawn "mpc prev" )
 
   -- XMonad
     , ( "M-S-q",                                 io (exitWith ExitSuccess) )
@@ -498,6 +509,7 @@ s_Keys =
   -- SCRATCHPADS
     , ("M1-C-<Return>",       namedScratchpadAction scratchpads "terminal" )
     , ("M1-C-s",               namedScratchpadAction scratchpads "spotify" )
+    , ("M1-C-n",               namedScratchpadAction scratchpads "ncmpcpp" )
 
   -- PROMPTS
     , ("M-x",                                       shellPrompt s_XPConfig )
