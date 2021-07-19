@@ -32,13 +32,6 @@ FILE="${1}"
 FILENAME="${FILE##*/}"
 FILEBASE="${FILENAME%.*}"
 
-# drop shadow: 60% opacity, 10 sigma, +0x +10y
-#convert "${FILE}" \( +clone -background black -shadow 80x30+0+0 \) +swap -background "#a7daff" -layers merge +repage "$SCREENSHOTFOLDER/${FILEBASE}.png"
-
-#notify-send -u low -t 2000 "${FILEBASE}.png saved."
-
-
-#rm "$FILE" #remove this line to preserve original image
 
 convert "${FILE}" \
       -format 'roundrectangle 1,1 %[fx:w+4],%[fx:h+4] 15,15' \
