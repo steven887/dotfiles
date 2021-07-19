@@ -257,7 +257,7 @@ myshowWNameTheme = def
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
-myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?? EOT) $ T.toggleLayouts tab $ avoidStruts  (
+myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?? EOT) $ avoidStruts $ T.toggleLayouts tab   (
            --monocle      |||
            tall         ||| 
            grid         |||
@@ -291,6 +291,7 @@ myLayout = mouseResize $ windowArrange  $ mkToggle (NBFULL ??NOBORDERS ?? FULL ?
                $ ThreeCol 1 (3/100) (1/2)
 
     tab      = renamed [Replace "Tabs"]
+               $ smartBorders
                $ tabbed shrinkText myTabConfig 
 
     floats   = renamed [Replace "Floats"]
@@ -488,9 +489,9 @@ s_Keys =
    -- , ("<XF86AudioStop>",                           spawn "playerctl stop" )
    -- , ("<XF86AudioNext>",                           spawn "playerctl next" )
    -- , ("<XF86AudioPrev>",                       spawn "playerctl previous" )
-   -- , ("<XF86AudioMute>",                 spawn "amixer set Master toggle" )
-   -- , ("<XF86AudioLowerVolume>",             spawn "amixer set Master 2%-" )
-   -- , ("<XF86AudioRaiseVolume>",             spawn "amixer set Master 2%+" )
+    , ("<XF86AudioMute>",                 spawn "amixer set Master toggle" )
+    , ("<XF86AudioLowerVolume>",             spawn "amixer set Master 2%-" )
+    , ("<XF86AudioRaiseVolume>",             spawn "amixer set Master 2%+" )
     
     -- ncmpcpp
     , ("<XF86Tools>",          namedScratchpadAction scratchpads "ncmpcpp" )
