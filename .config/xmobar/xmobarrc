@@ -28,8 +28,8 @@ Config {
    , borderColor     = "#646464"
    , iconRoot        = "/home/steven/.xmonad/xpm" -- default: "."
 
-   -- layout
-   
+
+  -- layout
    , sepChar =  "%"   -- delineator between plugin names and straight text
    , alignSep = "}{"  -- separator between left-right alignment
    , lowerOnStart =     True   -- send to bottom of window stack on start
@@ -41,14 +41,29 @@ Config {
    , template = "<fc=#7bf9f2>%UnsafeStdinReader%</fc> } { %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc>%coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc>%date%<fc=#666666>|</fc><fc=#0CBCF7><fn=3>%recording-stats%</fn></fc> %trayerpad% " 
    --<icon=arch20x20.xpm/><fc=#666666> |</fc> 
    
+   -- plugins
+   --   Numbers can be automatically colored according to their value. xmobar
+   --   decides color based on a three-tier/two-cutoff system, controlled by
+   --   command options:
+   --     --Low sets the low cutoff
+   --     --High sets the high cutoff
+   --
+   --     --low sets the color below --Low cutoff
+   --     --normal sets the color between --Low and --High cutoffs
+   --     --High sets the color above --High cutoff
+   --
+   --   The --template option controls how the plugin is displayed. Text
+   --   color can be set by enclosing in <fc></fc> tags. For more details
+   --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
    , commands = 
 
         -- weather monitor
-       [ Run Weather "WIII" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% | <fc=#4682B4><pressure></fc>hPa"
-                             ] 36000
+       [
+       --Run Weather "WIII" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% | <fc=#4682B4><pressure></fc>hPa"
+       --                      ] 36000
 
         -- StdinReader
-        , Run UnsafeStdinReader
+          Run UnsafeStdinReader
 
         -- network activity monitor (dynamic interface resolution)
         , Run DynNetwork     [ "--template" , "<fn=1><fc=#0CBCF7>\xf0aa </fc></fn><tx><fc=#0febff> kB/s</fc> <fn=1><fc=#0CBCF7> \xf0ab </fc></fn><rx><fc=#0febff> kB/s</fc>"
