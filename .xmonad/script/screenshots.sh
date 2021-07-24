@@ -48,3 +48,4 @@ convert "${FILE}" \
 
 notify-send -u low -t 2000 "${FILEBASE}.png saved."
 rm -f tmp.mvg      # Cleanup of temporary file
+rm $FILE

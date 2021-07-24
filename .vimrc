@@ -38,7 +38,7 @@ set nobackup
 set undodir=~/.vim/undodir
 set undofile
 set incsearch
-set termguicolors
+"set termguicolors
 "set t_Co=256
 set encoding=UTF-8
 set laststatus=2 "for lightline"
@@ -49,6 +49,11 @@ set guifont=Fira\ Code\ iScript\ 10
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+
+"if (has("termguicolors"))
+"  set termguicolors
+"endif
+
 "### end ###
 
 "install vim Plug
@@ -90,7 +95,8 @@ Plug 'ap/vim-css-color'
 Plug 'chrisbra/colorizer'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'vim-syntastic/syntastic'
-Plug 'artanikin/vim-synthwave84'
+Plug 'artanikin/vim-synthwave84' 
+Plug 'dylanaraps/wal.vim' "--colorscheme
 "Plug 'bitc/vim-hdevtools'
 "### Vim language packs ###
 Plug 'sheerun/vim-polyglot'
@@ -135,13 +141,13 @@ endif
 "===================================
 
 " ============= Deep Space ========
-set background=dark
-let g:deepspace_italics=1
-let g:lightline = { 'colorscheme': 'deepspace' }
-colorscheme synthwave84
-"=========================================================
+"set background=dark
+"let g:deepspace_italics=1
+"let g:lightline = { 'colorscheme': 'wal' }
+"colorscheme synthwave84 
 
 "colorscheme elflord
+colorscheme wal 
 
 set ts=4 sw=4 et
 let g:indent_guides_start_level=2

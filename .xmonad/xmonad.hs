@@ -103,6 +103,30 @@ import XMonad.Prompt.AppLauncher as AL
 
 -------------------- # Variables Section # ------------------------    
 
+-- Special
+background="#3c4145"
+foreground="#e0f1f5"
+cursor="#e0f1f5"
+
+-- Colors
+color0="#3c4145"
+color1="#DEB39C"
+color2="#9DC6A5"
+color3="#E0D0A3"
+color4="#A0D3D2"
+color5="#B6F2FD"
+color6="#E3E3D0"
+color7="#e0f1f5"
+color8="#9ca8ab"
+color9="#DEB39C"
+color10="#9DC6A5"
+color11="#E0D0A3"
+color12="#A0D3D2"
+color13="#B6F2FD"
+color14="#E3E3D0"
+color15="#e0f1f5"
+
+ 
 ----  what terminal emulator you use?
 s_Term = "st"
 s_Term2 = "kitty"
@@ -119,9 +143,12 @@ myClickJustFocuses = False
 myBorderWidth = 2
 
 -- Your border color
-myNormalBorderColor  = "#BADFFD"
-myFocusedBorderColor = "#0Febff" 
+--myNormalBorderColor  = "#BADFFD"
+--myFocusedBorderColor = "#0Febff" 
 
+myNormalBorderColor  = color5 
+myFocusedBorderColor = color9 
+ 
 ---- neon-green setup border
 --myNormalBorderColor  = "#22d964"
 --myFocusedBorderColor = "#3ef008" 
@@ -349,6 +376,7 @@ myManageHook = composeAll
    <+>composeOne
    [
      className =? "Pcmanfm"                 -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
+   , className =? "Nitrogen"                 -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
    , className =? "Blueman-manager"         -?>  doCenterFloat  
    , className =? "Pavucontrol"             -?>  doCenterFloat  
    , className =? "Nm-connection-editor"    -?>  doCenterFloat  
@@ -433,6 +461,7 @@ s_Keys =
          , ( "M1-C-f",                                       spawn "firefox" )
          , ( "M-C-f",                       spawn "firefox --private-window" )
          , ( "M-p",                                          spawn "pcmanfm" )
+         , ( "M-n",                                         spawn "nitrogen" )
          --, ( "M-d",                                spawn "dmenu_run -h 24" )
          , ( "M-<Space>",     spawn "dmenu_run -c -l 20 -bw 2  -i -p 'Run :'")
          , ( "M-d t",                 spawn "$HOME/mygithub/dmenu-scripts/tv")
@@ -510,7 +539,7 @@ s_Keys =
   -- SCRATCHPADS
     , ("M1-C-<Return>",       namedScratchpadAction scratchpads "terminal" )
     , ("M1-C-s",               namedScratchpadAction scratchpads "spotify" )
-    , ("M1-C-n",               namedScratchpadAction scratchpads "ncmpcpp" )
+    , ("M-S-n",               namedScratchpadAction scratchpads "ncmpcpp" )
 
   -- PROMPTS
     , ("M-x",                                       shellPrompt s_XPConfig )
