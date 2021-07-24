@@ -23,7 +23,7 @@ Config {
   -- , position      = TopW C 95 
   -- , border        = BottomB
   -- , position      = Top 
-   , position        = Static { xpos = 0 , ypos = 0, width = 1920, height = 24 }
+   , position        = Static { xpos = 10 , ypos = 5, width = 1900, height = 26 }
   -- , position = Static { xpos = 1920 , ypos = 0, width = 1366, height = 19 }
    , borderColor     = "#646464"
    , iconRoot        = "/home/steven/.xmonad/xpm" -- default: "."
@@ -38,7 +38,7 @@ Config {
    , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
    , pickBroadest =     False   -- choose widest display (multi-monitor)
    , persistent =       True    -- enable/disable hiding (True = disabled)
-   , template = "<fc=#7bf9f2>%UnsafeStdinReader%</fc> } { %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc>%coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc>%date%<fc=#666666>|</fc><fc=#0CBCF7><fn=3>%recording-stats%</fn></fc> %trayerpad% " 
+   , template = " <fc=#7bf9f2>%UnsafeStdinReader%</fc>}{ %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc>%coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc>%date%<fc=#666666>|</fc><fc=#0CBCF7><fn=3>%recording-stats%</fn></fc>%trayerpad% " 
    --<icon=arch20x20.xpm/><fc=#666666> |</fc> 
    
    -- plugins

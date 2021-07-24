@@ -372,9 +372,9 @@ s_HandleEventHook = dynamicPropertyChange "WM_NAME" (className =? "Spotify" --> 
 ------                  STATUS BARS & LOGGING                ------               
 -------------------------------------------------------------------
 
-myLogHook :: X ()
-myLogHook = return () -- fadeInactiveLogHook fadeAmount
-   where fadeAmount = 1.0
+--myLogHook :: X ()
+--myLogHook = return () -- fadeInactiveLogHook fadeAmount
+--   where fadeAmount = 1.0
 
 -------------------------------------------------------------------
 ------                     STARTUP HOOK                      ------               
@@ -383,7 +383,7 @@ myLogHook = return () -- fadeInactiveLogHook fadeAmount
 myStartupHook = do
    spawnOnce "nitrogen --restore &"
    spawnOnce "picom &"
-   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 127 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 &"
+   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 127 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 --distance 6 --margin 15 &"
 --   spawnOnce "xwinwrap -g 1366x768+1920+0 -ni -s -nf -b -un -ov -fdt -argb -- mpv --mute=yes --no-audio --no-osc --no-osd-bar --quiet --screen=0 --geometry=1366x768+1920+0 --loop -wid WID  --panscan=1.0  /home/steven/steven_data/video_wallpaper/434837.mp4 &"
 --   spawnOnce "xwinwrap -g 1920x1080+0+0 -ni -s -nf -b -un -ov -fdt -argb -- mpv --mute=yes --no-audio --no-osc --no-osd-bar --quiet --screen=0 --geometry=1920x1080+0+0 --loop -wid WID  --panscan=1.0  /home/steven/steven_data/video_wallpaper/434837.mp4 &" 
 
@@ -528,8 +528,7 @@ main = do
 	xmproc0 <- spawnPipe "xmobar -x 0 /home/steven/.config/xmobar/xmobarrc" 
 	xmproc1 <- spawnPipe "xmobar -x 1 /home/steven/.config/xmobar/xmobarrc2" 
  	xmonad $  ewmh defaults {
-        logHook = dynamicLogWithPP  $ def
-        {
+        logHook = dynamicLogWithPP .namedScratchpadFilterOutWorkspacePP $ xmobarPP {
           ppOutput  = \x ->  hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
         --, ppCurrent = xmobarColor "#cbe500" "#078202"  . wrap " "  " " -- "#71fe00" -- . wrap "[" "]"
         -- without background
@@ -546,7 +545,7 @@ main = do
         } `additionalKeysP` s_Keys 
 
 defaults = def {
-      -- simple stuff
+      -- SIMPLE STUFF
         terminal           = s_Term,
         focusFollowsMouse  = myFocusFollowsMouse,
         clickJustFocuses   = myClickJustFocuses,
@@ -556,15 +555,16 @@ defaults = def {
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,
 
-      -- key bindings
-     --   keys               = myKeys,
-     --   mouseBindings      = myMouseBindings,
+      -- KEY BINDINGS
+         --keys               = myKeys,
+         --mouseBindings      = myMouseBindings,
 
-      -- hooks, layouts
+      -- HOOKS, LAYOUTS
         layoutHook         = showWName' myshowWNameTheme $ myLayout,
         manageHook         = myManageHook <+> manageDocks,
-        handleEventHook    = s_HandleEventHook <+> docksEventHook,
-        logHook            = myLogHook ,
+        handleEventHook    = s_HandleEventHook <+> docksEventHook <+> fullscreenEventHook,
+
+        --logHook            = myLogHook  ,
         startupHook        = myStartupHook
     }
 
