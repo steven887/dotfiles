@@ -1,13 +1,18 @@
 <h1 align="center"> 💀  ✴️ XMONAD - <i>MINIMALIST</i> SETUP ✴️ 💀 </h1>
 
-<p align="center" >
-<img src = "https://github.com/steven887/dotfiles/blob/main/xmonad-setup/minimalist/screenshots/screenshot3.png" >
-</p>
+https://user-images.githubusercontent.com/56388992/127068745-ef888568-bdc4-461e-807b-25db0132d8bb.mp4  
+
 
 ----
 
+<details>
+  <summary>Screenshots</summary>
+  <img src="https://github.com/steven887/dotfiles/blob/main/xmonad-setup/minimalist/screenshots/screenshot1.png" name="screenshot1">
+  <img src="https://github.com/steven887/dotfiles/blob/main/xmonad-setup/minimalist/screenshots/screenshot2.png" name="screenshot2">
+  <img src="https://github.com/steven887/dotfiles/blob/main/xmonad-setup/minimalist/screenshots/screenshot3.png" name="screenshot3">
+</details>
 
-https://user-images.githubusercontent.com/56388992/127068745-ef888568-bdc4-461e-807b-25db0132d8bb.mp4  
+
 
 #
 
