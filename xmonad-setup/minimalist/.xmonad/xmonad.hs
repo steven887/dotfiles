@@ -528,10 +528,10 @@ main = do
         , ppHiddenNoWindows = xmobarColor color9 ""  
         , ppTitle   = xmobarColor color15 "" . shorten 20
         , ppSep     =  "<fc=#666666> | </fc>"
-        , ppExtras  = [windowCount] 
+        -- , ppExtras  = [windowCount] 
         --, ppOrder   = \(ws:l:t:ex) -> [ws]++ex++[t]
-        , ppOrder   = \(ws:l:t:_) -> [ws,l]++[t] 
-        }
+        , ppOrder   = \(ws:l:_:_) -> [ws]    
+        }  
         } `additionalKeysP` s_Keys 
 
 defaults = def {
