@@ -11,13 +11,18 @@
 
 --------------------- # Import Module Section # -------------------- 
 
+import Colors
+
 --------------------------------------------------------------------
 --                             CORE                               --
 --------------------------------------------------------------------
+ 
 import XMonad
 import System.Exit
 import qualified XMonad.StackSet as W
 import System.IO (hPutStrLn)
+
+
 -------------------------------------------------------------------
 ------                          DATA                         ------               
 -------------------------------------------------------------------
@@ -103,30 +108,6 @@ import XMonad.Prompt.AppLauncher as AL
 
 -------------------- # Variables Section # ------------------------    
 
--- Special
-background="#3c4145"
-foreground="#e0f1f5"
-cursor="#e0f1f5"
-
--- Colors
-color0="#3c4145"
-color1="#DEB39C"
-color2="#9DC6A5"
-color3="#E0D0A3"
-color4="#A0D3D2"
-color5="#B6F2FD"
-color6="#E3E3D0"
-color7="#e0f1f5"
-color8="#9ca8ab"
-color9="#DEB39C"
-color10="#9DC6A5"
-color11="#E0D0A3"
-color12="#A0D3D2"
-color13="#B6F2FD"
-color14="#E3E3D0"
-color15="#e0f1f5"
-
- 
 ----  what terminal emulator you use?
 s_Term = "st"
 s_Term2 = "kitty"
@@ -143,11 +124,11 @@ myClickJustFocuses = False
 myBorderWidth = 2
 
 -- Your border color
---myNormalBorderColor  = "#BADFFD"
---myFocusedBorderColor = "#0Febff" 
+myNormalBorderColor  = "#BADFFD"
+myFocusedBorderColor = "#0Febff" 
 
-myNormalBorderColor  = color5 
-myFocusedBorderColor = color9 
+--myNormalBorderColor  = color7 
+--myFocusedBorderColor = color5 
  
 ---- neon-green setup border
 --myNormalBorderColor  = "#22d964"
@@ -411,7 +392,7 @@ s_HandleEventHook = dynamicPropertyChange "WM_NAME" (className =? "Spotify" --> 
 myStartupHook = do
    spawnOnce "nitrogen --restore &"
    spawnOnce "picom &"
-   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 127 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 --distance 6 --margin 15 &"
+   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 127 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 --distance 10 --margin 25 &"
 --   spawnOnce "xwinwrap -g 1366x768+1920+0 -ni -s -nf -b -un -ov -fdt -argb -- mpv --mute=yes --no-audio --no-osc --no-osd-bar --quiet --screen=0 --geometry=1366x768+1920+0 --loop -wid WID  --panscan=1.0  /home/steven/steven_data/video_wallpaper/434837.mp4 &"
 --   spawnOnce "xwinwrap -g 1920x1080+0+0 -ni -s -nf -b -un -ov -fdt -argb -- mpv --mute=yes --no-audio --no-osc --no-osd-bar --quiet --screen=0 --geometry=1920x1080+0+0 --loop -wid WID  --panscan=1.0  /home/steven/steven_data/video_wallpaper/434837.mp4 &" 
 
@@ -572,6 +553,7 @@ main = do
         , ppOrder   = \(ws:l:t:ex) -> [ws, l]++ex++[t]
         }
         } `additionalKeysP` s_Keys 
+
 
 defaults = def {
       -- SIMPLE STUFF

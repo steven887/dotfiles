@@ -1,17 +1,3 @@
-" File              : .vimrc
-" License           : MIT
-" Author            : Steven Agustinus <steven87.ags@gmail.com>
-" Date              : 11.06.2021
-" Last Modified Date: 23.06.2021
-" Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
-" File              : .vimrc
-" Author            : Steven Agustinus <steven87.ags@gmail.com>
-" Date              : 11.06.2021
-" Last Modified Date: 11.06.2021
-" Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
-" File              : .vimrc
-" Date              : 11.06.2021
-" Last Modified Date: 11.06.2021
 " #######################################################
 "      _____ ___                                        #
 "     / ___//   |    # My Personal Config               #
@@ -38,7 +24,7 @@ set nobackup
 set undodir=~/.vim/undodir
 set undofile
 set incsearch
-"set termguicolors
+set termguicolors
 "set t_Co=256
 set encoding=UTF-8
 set laststatus=2 "for lightline"
@@ -141,13 +127,13 @@ endif
 "===================================
 
 " ============= Deep Space ========
-"set background=dark
-"let g:deepspace_italics=1
-"let g:lightline = { 'colorscheme': 'wal' }
-"colorscheme synthwave84 
+set background=dark
+let g:deepspace_italics=1
+let g:lightline = { 'colorscheme': 'deepspace' }
+colorscheme deep-space 
 
 "colorscheme elflord
-colorscheme wal 
+"colorscheme wal 
 
 set ts=4 sw=4 et
 let g:indent_guides_start_level=2

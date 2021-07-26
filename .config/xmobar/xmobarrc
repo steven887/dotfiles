@@ -23,7 +23,7 @@ Config {
   -- , position      = TopW C 95 
   -- , border        = BottomB
   -- , position      = Top 
-   , position        = Static { xpos = 10 , ypos = 5, width = 1900, height = 26 }
+   , position        = Static { xpos = 20 , ypos = 8, width = 1880, height = 26 }
   -- , position = Static { xpos = 1920 , ypos = 0, width = 1366, height = 19 }
    , borderColor     = "#646464"
    , iconRoot        = "/home/steven/.xmonad/xpm" -- default: "."
