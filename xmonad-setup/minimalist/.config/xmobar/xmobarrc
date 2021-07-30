@@ -17,9 +17,9 @@ Config {
    , additionalFonts = ["xft:MesloLGL Nerd Font:pixelsize=16:Regular:antialias=true"
                        ,"xft:Font Awesome 5 Free Solid:pixelsize=15:Solid:antialias=true"
                        ,"xft:Noto Color Emoji:pixelsize=13:Regular" ]
-   , bgColor         = "#000200"
+   , bgColor         = "#0A0512"
    , alpha           = 127 
-   , fgColor         = "#d7f5d6"
+   , fgColor         = "#a9c4dc"
    -- , position      = TopW C 95 
    -- , border        = BottomB
    -- , position      = Top 
@@ -38,9 +38,9 @@ Config {
    , overrideRedirect         = True    -- set the Override Redirect flag (Xlib)
    , pickBroadest             = False   -- choose widest display (multi-monitor)
    , persistent               = True    -- enable/disable hiding (True = disabled)
-   , template                 = "%date%<fc=#666666>| </fc><action=./colorschemes-changer><fn=3>🎨</fn></action>} <fc=#9EFD9E>%UnsafeStdinReader%</fc>{ %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc> \
+   , template                 = "%date%<fc=#666666>| </fc><action=./colorschemes-changer><fn=3>🎨</fn></action>} <fc=#4B93BD>%UnsafeStdinReader%</fc>{ %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc> \
                                  \ %coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc> \
-                                 \ <fc=#80FC7F><fn=3>%recording-stats%</fn></fc>%trayerpad% " 
+                                 \ <fc=#5569A3><fn=3>%recording-stats%</fn></fc>%trayerpad% " 
    
    -- plugins
    --   Numbers can be automatically colored according to their value. xmobar
@@ -67,7 +67,7 @@ Config {
           Run UnsafeStdinReader
 
         -- network activity monitor (dynamic interface resolution)
-        , Run DynNetwork     [ "--template" , "<fn=1><fc=#80FC7F>\xf0aa </fc></fn><tx><fc=#d7f5d6> kB/s</fc> <fn=1><fc=#80FC7F> \xf0ab </fc></fn><rx><fc=#d7f5d6> kB/s</fc>"
+        , Run DynNetwork     [ "--template" , "<fn=1><fc=#5569A3>\xf0aa </fc></fn><tx><fc=#a9c4dc> kB/s</fc> <fn=1><fc=#5569A3> \xf0ab </fc></fn><rx><fc=#a9c4dc> kB/s</fc>"
                              , "--Low"      , "1000"       -- units: B/s  
                              , "--High"     , "5000"       -- units: B/s
                              , "--low"      , "white"
@@ -76,7 +76,7 @@ Config {
                              ] 10
 
         -- cpu activity monitor
-        , Run MultiCpu       [ "--template" , "<fn=1><fc=#80FC7F> \xf2db </fc></fn> <total0>%" --|<total1>%"
+        , Run MultiCpu       [ "--template" , "<fn=1><fc=#5569A3> \xf2db </fc></fn> <total0>%" --|<total1>%"
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "85"         -- units: %
                              , "--low"      , "white"
@@ -85,7 +85,7 @@ Config {
                              ] 10
 
         -- cpu core temperature monitor
-        , Run CoreTemp       [ "--template" , "<fc=#80FC7F> <fn=1>\xf2c8</fn> </fc><core0><fn=1> \xfa03 </fn>" -- |<core1>°C" , "--Low"      , "70"        -- units: °C
+        , Run CoreTemp       [ "--template" , "<fc=#5569A3> <fn=1>\xf2c8</fn> </fc><core0><fn=1> \xfa03 </fn>" -- |<core1>°C" , "--Low"      , "70"        -- units: °C
                              , "--High"     , "80"        -- units: °C
                              , "--low"      , "white"
                              , "--normal"   , "#B0B0B0"
@@ -93,7 +93,7 @@ Config {
                              ] 50
                           
         -- memory usage monitor
-        , Run Memory         [ "--template" ,"<fn=1><fc=#80FC7F>\xf85a </fc></fn><usedratio>%"
+        , Run Memory         [ "--template" ,"<fn=1><fc=#5569A3>\xf85a </fc></fn><usedratio>%"
                              , "--Low"      , "20"        -- units: %
                              , "--High"     , "90"        -- units: %
                              , "--low"      , "white"
@@ -115,12 +115,12 @@ Config {
                                        -- AC "on" status
                                        , "-O"	, "<fc=#dAA520><fn=1>\xf583</fc>"
                                        -- charged status
-                                       , "-i"	, "<fc=#80FC7F><fn=1> \xf1e6 </fn></fc>"
+                                       , "-i"	, "<fc=#5569A3><fn=1> \xf1e6 </fn></fc>"
                              ] 50
 
         -- time and date indicator 
         --   (%F = d-m-y date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<fc=#80FC7F><fn=1> \xf073 </fn></fc> <fc=#9EFD9E>%a,%e-%b-%Y %R </fc>" "date" 10
+        , Run Date           "<fc=#5569A3><fn=1> \xf073 </fn></fc> <fc=#4B93BD>%a,%e-%b-%Y %R </fc>" "date" 10
         
         , Run Com "/home/steven/steven_data/coding_time/recording-stats" [] "recording-stats"  10
 
@@ -129,10 +129,10 @@ Config {
                              , ("us"         , "<fc=#8B0000>US</fc>")
                              ]
            -- volume indicator 
-           , Run Volume "default" "Master" ["--template", "<fn=1><fc=#80FC7F>\xf7ca </fc></fn><fc=#9EFD9E><volume>%</fc> <status>"
+           , Run Volume "default" "Master" ["--template", "<fn=1><fc=#5569A3>\xf7ca </fc></fn><fc=#4B93BD><volume>%</fc> <status>"
                                            , "--" -- volume status
                                                   -- status on 
-                                                  , "-O","<fc=#d7f5d6>[On]</fc> "
+                                                  , "-O","<fc=#a9c4dc>[On]</fc> "
 
                                         ] 10
         -- trayer padding
