@@ -1,0 +1,88 @@
+#!/bin/bash
+# File              : colorschemes-changer
+# License           : MIT
+# Author            : Steven
+# Date              : 28.07.2021
+# Last Modified Date: 28.07.2021
+# Last Modified By  : Steven
+
+IMGDIR=$HOME/steven_data/mywallpaper/
+
+
+
+
+function COLORCHANGER(){
+ #wallpaper="$(find ~/steven_data/mywallpaper/ | shuf -n1)";
+ WALLPAPER="$(find "$IMGDIR"  -name "*.jpg" -or -name "*.png" | shuf -n1)"
+ feh --randomize --bg-scale "$WALLPAPER";
+ wal -i "$WALLPAPER" -n; 
+
+}
+COLORCHANGER
+sleep 1
+
+#special
+background="$(grep background /home/steven/.cache/wal/colors.yml | sed -e 's/"/ /g' | awk '{print $2}')" 
+foreground="$(grep foreground /home/steven/.cache/wal/colors.yml | sed -e 's/"/ /g' | awk '{print $2}')"
+##Colors
+color0="$(grep color0 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color1="$(grep color1: /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color2="$(grep color2 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color3="$(grep color3 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color4="$(grep color4 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color5="$(grep color5 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color6="$(grep color6 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color7="$(grep color7 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color8="$(grep color8 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color9="$(grep color9 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color10="$(grep color10 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color11="$(grep color11 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color12="$(grep color12 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color13="$(grep color13 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color14="$(grep color14 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+color15="$(grep color15 /home/steven/.cache/wal/colors.yml| sed -e 's/"/ /g' | awk '{print $2}')"
+
+function XICON(){
+sed -e "s/BGC/$background/g" \
+    -e "s/FGC/$foreground/g" \
+    -e "s/COLOR0/$color0/g" \
+    -e "s/COLOR1/$color1/g" \
+    -e "s/COLOR2/$color2/g" \
+    -e "s/COLOR3/$color3/g" \
+    -e "s/COLOR4/$color4/g" \
+    -e "s/COLOR5/$color5/g" \
+    -e "s/COLOR6/$color6/g" \
+    -e "s/COLOR7/$color7/g" \
+    -e "s/COLOR8/$color8/g" \
+    -e "s/COLOR9/$color9/g" \
+    -e "s/COLOR10/$color10/g" \
+    -e "s/COLOR11/$color11/g" \
+    -e "s/COLOR12/$color12/g" \
+    -e "s/COLOR13/$color13/g" \
+    -e "s/COLOR14/$color14/g" \
+    -e "s/COLOR15/$color15/g" \
+      ~/.config/xmobar/parameter-template/xmobarrc-parameter >  ~/.config/xmobar/xmobarrc
+
+sed -e "s/BGC/$background/g" \
+    -e "s/FGC/$foreground/g" \
+    -e "s/COLOR0/$color0/g" \
+    -e "s/COLOR1/$color1/g" \
+    -e "s/COLOR2/$color2/g" \
+    -e "s/COLOR3/$color3/g" \
+    -e "s/COLOR4/$color4/g" \
+    -e "s/COLOR5/$color5/g" \
+    -e "s/COLOR6/$color6/g" \
+    -e "s/COLOR7/$color7/g" \
+    -e "s/COLOR8/$color8/g" \
+    -e "s/COLOR9/$color9/g" \
+    -e "s/COLOR10/$color10/g" \
+    -e "s/COLOR11/$color11/g" \
+    -e "s/COLOR12/$color12/g" \
+    -e "s/COLOR13/$color13/g" \
+    -e "s/COLOR14/$color14/g" \
+    -e "s/COLOR15/$color15/g" \
+      ~/.config/xmobar/parameter-template/xmobarrc2-parameter >  ~/.config/xmobar/xmobarrc2
+}
+
+XICON
+xmonad --restart

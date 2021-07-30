@@ -20,8 +20,11 @@ import Colors
 import XMonad
 import System.Exit
 import qualified XMonad.StackSet as W
+import System.Directory (getHomeDirectory, doesFileExist, doesDirectoryExist, getDirectoryContents)
+import System.FilePath ((</>))
+import System.Random (randomRIO)
 import System.IO (hPutStrLn)
-
+import System.Process
 
 -------------------------------------------------------------------
 ------                          DATA                         ------               
@@ -45,6 +48,7 @@ import XMonad.Util.Run
 import XMonad.Util.EZConfig
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Util.NamedScratchpad
+import qualified XMonad.Util.ExtensibleState as XS
 -------------------------------------------------------------------
 ------                          HOOKS                        ------ 
 -------------------------------------------------------------------
@@ -55,6 +59,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts(..))
 import XMonad.Hooks.DynamicProperty
+import XMonad.Hooks.WallpaperSetter ( wallpaperSetter, WallpaperConf(..), WallpaperList(..), defWallpaperConf,  defWPNames )
 
 
 -------------------------------------------------------------------
@@ -176,6 +181,7 @@ s_XPKeymap  = M.fromList $
   , (xK_Up, moveHistory W.focusDown')
   , (xK_Escape, quit)
   ]
+--- End XPKEYMAP
 
 isPrefixOf :: Eq a => [a] -> [a] -> Bool 
 isPrefixOf [] _         =  True
@@ -203,23 +209,40 @@ s_XPConfig = def
   , alwaysHighlight     = True
   , maxComplRows        = Just 10 
  }
+-----
 
-
+--- XMOBAR Escape to output a string with given foreground & background colors,
+--- so i can use a same icon for all workspaces, and replace them with other icon when switch from one to another 
+--- workspaces
 xmobarEscape :: String -> String
 xmobarEscape = concatMap doubleLts
   where
     doubleLts 'a' = "<<"
     doubleLts x = [x]
-
+------------------------------ End Xmobar Escapes ------------------------
+--
+-------------------------- Clickable workspaces --------------------------
 myWorkspaces :: [String]
 myWorkspaces = clickable . (map xmobarEscape)
     $ ["\xf10c","\xf10c","\xf10c","\xf10c","\xf10c","\xf10c","\xf10c","\xf10c","\xf10c"]
   where
     clickable l = ["<action=xdotool key super+" ++ show (i) ++ "> " ++ ws ++ "</action>" | (i, ws) <- zip [1 .. 9] l]
 
+
+
+
 ------------------------------------------------------------------
 
+
 ------------------ # End Variables Section # ----------------------    
+
+
+--------- Wallpaper Setter Module Section -----------
+-- This module to change wallpaper on each workspaces,
+--
+
+-- | get absolute picture path of the given wallpaper picture
+-- or select a random one if it is a directory
 
 
 -------------------------------------------------------------------
@@ -229,14 +252,14 @@ myWorkspaces = clickable . (map xmobarEscape)
 -- this will show the workspace name everytime you move or change to another workspace
 --myshowWNameTheme :: SWNConfig
 --myshowWNameTheme = def
---  {
---  --swn_font         = "xft:MiriamMonoCLM:bold:size=60:antialias=true:hinting=true"
---  --swn_font         = "xft:NotoSansCJKSC:bold:size=60:antialias=true:hinting=true"
---  swn_font         = "xft:Font Awesome 5 Free Solid:Solid:pixelsize=120:antialias=true:hinting=true"
---  --swn_font          = "xft:MesloLGL Nerd Font:size=60:Regular:antialias=true"
---  ,swn_fade         = 0.50
---  ,swn_bgcolor      = "#191c21"
---  ,swn_color        = "#0CBCF7"
+  --{
+----  swn_font         = "xft:MiriamMonoCLM:bold:size=60:antialias=true:hinting=true"
+----  swn_font         = "xft:NotoSansCJKSC:bold:size=60:antialias=true:hinting=true"
+----  swn_font         = "xft:Font Awesome 5 Free Solid:Solid:pixelsize=120:antialias=true:hinting=true"
+  --swn_font          = "xft:MesloLGL Nerd Font:size=60:Regular:antialias=true"
+  --,swn_fade         = 0.50
+  --,swn_bgcolor      = "#191c21"
+  --,swn_color        = "#0CBCF7"
 --  }
 
 
@@ -371,9 +394,10 @@ s_HandleEventHook = dynamicPropertyChange "WM_NAME" (className =? "Spotify" --> 
 -------------------------------------------------------------------
 
 myStartupHook = do
-   spawnOnce "nitrogen --restore &"
+--   spawnOnce "nitrogen --restore &"
+   spawnOnce "wal -R  &"
    spawnOnce "picom &"
-   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 127 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 --distance 10 --margin 25 &"
+   spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request  --transparent true --alpha 165 --tint 0x000000  --height 22 --monitor 0 --iconspacing 2 --distance 10 --margin 25 &"
 --   spawnOnce "xwinwrap -g 1366x768+1920+0 -ni -s -nf -b -un -ov -fdt -argb -- mpv --mute=yes --no-audio --no-osc --no-osd-bar --quiet --screen=0 --geometry=1366x768+1920+0 --loop -wid WID  --panscan=1.0  /home/steven/steven_data/video_wallpaper/434837.mp4 &"
 --   spawnOnce "xwinwrap -g 1920x1080+0+0 -ni -s -nf -b -un -ov -fdt -argb -- mpv --mute=yes --no-audio --no-osc --no-osd-bar --quiet --screen=0 --geometry=1920x1080+0+0 --loop -wid WID  --panscan=1.0  /home/steven/steven_data/video_wallpaper/434837.mp4 &" 
 
@@ -514,23 +538,28 @@ s_Keys =
 ------                        MAIN                           ------               
 -------------------------------------------------------------------
 
+--Wallpaper = WallpaperDir 
 
 main :: IO ()
 main = do
 	xmproc0 <- spawnPipe "xmobar -x 0 /home/steven/.config/xmobar/xmobarrc" 
 	xmproc1 <- spawnPipe "xmobar -x 1 /home/steven/.config/xmobar/xmobarrc2" 
  	xmonad $  ewmh defaults {
-        logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP {
-          ppOutput  = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x 
-        , ppCurrent = xmobarColor color6 "" . \s -> " <fn=2>\61713</fn>"
-        , ppVisible = xmobarColor color7  "" . \s -> "<fn=2>\xf192</fn>" 
-        , ppHidden  = xmobarColor color15 "" 
+        logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP  -- $ 
+--         wallpaperSetter defWallpaperConf
+        {
+--          wallpapers = defWPNames myWorkspaces
+--                    <> WallpaperList [ ("\xf10c", WallpaperDir "1") ]
+          ppOutput          = \x -> hPutStrLn xmproc0 x   >> hPutStrLn xmproc1 x 
+        , ppCurrent         = xmobarColor color6 "" . \s -> " <fn=2>\61713</fn>" 
+        , ppVisible         = xmobarColor color5  "" . \s -> "<fn=2>\xf192</fn>"  
+        , ppHidden          = xmobarColor color15 "" 
         , ppHiddenNoWindows = xmobarColor color9 ""  
-        , ppTitle   = xmobarColor color15 "" . shorten 20
-        , ppSep     =  "<fc=#666666> | </fc>"
-        -- , ppExtras  = [windowCount] 
-        --, ppOrder   = \(ws:l:t:ex) -> [ws]++ex++[t]
-        , ppOrder   = \(ws:l:_:_) -> [ws]    
+        , ppTitle           = xmobarColor color15 "" . shorten 20
+        , ppSep             =  "<fc=#666666> | </fc>"
+       -- , ppExtras        = [windowCount] 
+       -- , ppOrder         = \(ws:l:t:ex) -> [ws]++ex++[t]
+        , ppOrder            = \(ws:l:_:_) -> [ws]    
         }  
         } `additionalKeysP` s_Keys 
 
@@ -554,7 +583,8 @@ defaults = def {
         manageHook         = myManageHook <+> manageDocks,
         handleEventHook    = s_HandleEventHook <+> docksEventHook <+> fullscreenEventHook,
 
---        logHook            = myLogHook  ,
+     -- logHook            = myLogHook  ,
+     --   logHook            = wallpaperSetter defWallpaperConf { wallpapers = defWPNames myWorkspaces <> WallpaperList [()] }
         startupHook        = myStartupHook
     }
 

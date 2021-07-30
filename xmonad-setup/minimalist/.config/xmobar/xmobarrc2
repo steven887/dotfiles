@@ -1,3 +1,4 @@
+
 -- ##################################################################
 --      _____ ___                                                  ##
 --     / ___//   |    # My Personal Xmobar Config                  ##
@@ -6,6 +7,7 @@
 --   /____/_/  |_|                                                 ##
 --                                                                 ## 
 -- ##################################################################
+
 
 Config { 
 
@@ -17,9 +19,9 @@ Config {
    , additionalFonts = ["xft:MesloLGL Nerd Font:pixelsize=13:Regular:antialias=true"
                        ,"xft:Font Awesome 5 Free Solid:pixelsize=13:Solid:antialias=true"
                        ,"xft:Noto Color Emoji:pixelsize=13:Regular" ]
-   , bgColor         = "#000000"
+   , bgColor         = "#0A0A0C"
    , alpha           = 127
-   , fgColor         = "white"
+   , fgColor         = "#b1b5bb"
   -- , position      = TopW C 95 
   -- , border        = BottomB
   -- , position      = Top 
@@ -28,8 +30,8 @@ Config {
    , borderColor     = "#646464"
    , iconRoot        = "/home/steven/.xmonad/xpm" -- default: "."
 
-   -- layout
-   
+
+  -- layout
    , sepChar                  = "%"   -- delineator between plugin names and straight text
    , alignSep                 = "}{"  -- separator between left-right alignment
    , lowerOnStart             = True   -- send to bottom of window stack on start
@@ -38,8 +40,9 @@ Config {
    , overrideRedirect         = True    -- set the Override Redirect flag (Xlib)
    , pickBroadest             = False   -- choose widest display (multi-monitor)
    , persistent               = True    -- enable/disable hiding (True = disabled)
-   , template                 = "%date%<fc=#666666>|</fc>} <fc=#f5f5f5>%UnsafeStdinReader%</fc>{ %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc> \
-                                 \ %coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% " 
+   , template                 = "%date%<fc=#666666>| </fc><action=~/.xmonad/script/colorschemes-changer><fn=3>🎨</fn></action>} <fc=#F7C37B>%UnsafeStdinReader%</fc>{ %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc> \
+                                 \ %coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc>" 
+                                -- \ <fc=#DB996E><fn=3>%recording-stats%</fn></fc>%trayerpad% " 
    
    -- plugins
    --   Numbers can be automatically colored according to their value. xmobar
@@ -65,9 +68,8 @@ Config {
         -- StdinReader
           Run UnsafeStdinReader
 
-
         -- network activity monitor (dynamic interface resolution)
-        , Run DynNetwork     [ "--template" , "<fn=1><fc=#E8E8E8>\xf0aa </fc></fn><tx><fc=#f4f4f4> kB/s</fc> <fn=1><fc=#E8E8E8> \xf0ab </fc></fn><rx><fc=#f4f4f4> kB/s </fc>"
+        , Run DynNetwork     [ "--template" , "<fn=1><fc=#DB996E>\xf0aa </fc></fn><tx><fc=#b1b5bb> kB/s</fc> <fn=1><fc=#DB996E> \xf0ab </fc></fn><rx><fc=#b1b5bb> kB/s</fc>"
                              , "--Low"      , "1000"       -- units: B/s  
                              , "--High"     , "5000"       -- units: B/s
                              , "--low"      , "white"
@@ -76,7 +78,7 @@ Config {
                              ] 10
 
         -- cpu activity monitor
-        , Run MultiCpu       [ "--template" , "<fn=1><fc=#E8E8E8> \xf2db </fc></fn> <total0>%" --|<total1>%"
+        , Run MultiCpu       [ "--template" , "<fn=1><fc=#DB996E> \xf2db </fc></fn> <total0>%" --|<total1>%"
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "85"         -- units: %
                              , "--low"      , "white"
@@ -85,7 +87,7 @@ Config {
                              ] 10
 
         -- cpu core temperature monitor
-        , Run CoreTemp       [ "--template" , "<fc=#E8E8E8> <fn=1>\xf2c8</fn> </fc><core0><fn=1> \xfa03 </fn>"-- |<core1>°C" , "--Low"      , "70"        -- units: °C
+        , Run CoreTemp       [ "--template" , "<fc=#DB996E> <fn=1>\xf2c8</fn> </fc><core0><fn=1> \xfa03 </fn>" -- |<core1>°C" , "--Low"      , "70"        -- units: °C
                              , "--High"     , "80"        -- units: °C
                              , "--low"      , "white"
                              , "--normal"   , "#B0B0B0"
@@ -93,18 +95,19 @@ Config {
                              ] 50
                           
         -- memory usage monitor
-        , Run Memory         [ "--template" ,"<fn=1><fc=#E8E8E8>\xf85a </fc></fn><usedratio>%"
+        , Run Memory         [ "--template" ,"<fn=1><fc=#DB996E>\xf85a </fc></fn><usedratio>%"
                              , "--Low"      , "20"        -- units: %
                              , "--High"     , "90"        -- units: %
                              , "--low"      , "white"
                              , "--normal"   , "#B0B0B0"
                              , "--high"     , "#6E6E6E"
                              ] 10
+
         -- battery monitor
         , Run Battery        [ "--template" , "<acstatus>"
                              , "--Low"      , "10"        -- units: %
                              , "--High"     , "80"        -- units: %
-                             , "--low"      , "darkred"
+                             , "--low"      , "#6E6E6E"
                              , "--normal"   , "darkorange"
                              , "--high"     , "darkgreen"
 
@@ -114,12 +117,12 @@ Config {
                                        -- AC "on" status
                                        , "-O"	, "<fc=#dAA520><fn=1>\xf583</fc>"
                                        -- charged status
-                                       , "-i"	, "<fc=#E8E8E8><fn=1> \xf1e6 </fn></fc>"
+                                       , "-i"	, "<fc=#DB996E><fn=1> \xf1e6 </fn></fc>"
                              ] 50
 
         -- time and date indicator 
         --   (%F = d-m-y date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<fc=#E8E8E8><fn=1> \xf073 </fn></fc> <fc=#f5f5f5>%a,%e-%b-%Y %R </fc>" "date" 10
+        , Run Date           "<fc=#DB996E><fn=1> \xf073 </fn></fc> <fc=#F7C37B>%a,%e-%b-%Y %R </fc>" "date" 10
         
         , Run Com "/home/steven/steven_data/coding_time/recording-stats" [] "recording-stats"  10
 
@@ -128,15 +131,15 @@ Config {
                              , ("us"         , "<fc=#8B0000>US</fc>")
                              ]
            -- volume indicator 
-           , Run Volume "default" "Master" ["--template", "<fn=1><fc=#E8E8E8>\xf7ca </fc></fn><fc=#f5f5f5><volume>%</fc> <status>"
+           , Run Volume "default" "Master" ["--template", "<fn=1><fc=#DB996E>\xf7ca </fc></fn><fc=#F7C37B><volume>%</fc> <status>"
                                            , "--" -- volume status
                                                   -- status on 
-                                                  , "-O","<fc=#f4f4f4>[On]</fc> "
+                                                  , "-O","<fc=#b1b5bb>[On]</fc> "
 
                                         ] 10
         -- trayer padding
         , Run Com "/home/steven/.config/xmobar/padding-icon.sh" ["panel"] "trayerpad" 10
-      
+
        -- MPD
        -- , Run MPD ["-t", "<state>: <artist> - <track>"] 10
       
