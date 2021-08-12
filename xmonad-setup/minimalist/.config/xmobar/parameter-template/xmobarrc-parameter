@@ -37,10 +37,10 @@ Config {
    , allDesktops              = True    -- show on all desktops
    , overrideRedirect         = True    -- set the Override Redirect flag (Xlib)
    , pickBroadest             = False   -- choose widest display (multi-monitor)
-   , persistent               = True    -- enable/disable hiding (True = disabled)
-   , template                 = "%date%<fc=#666666>| </fc><action=./colorschemes-changer><fn=3>🎨</fn></action>} <fc=COLOR6>%UnsafeStdinReader%</fc>{ %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc> \
+   , persistent               = False    -- enable/disable hiding (True = disabled)
+   , template                 = "%date%<fc=#666666>| </fc><action=~/.xmonad/script/colorschemes-changer><fn=3>🎨</fn></action>} <fc=COLOR6>%UnsafeStdinReader%</fc>{ %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc> \
                                  \ %coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc> \
-                                 \ <fc=COLOR5><fn=3>%recording-stats%</fn></fc>%trayerpad% " 
+                                 \ <fc=#700><action=`poweroff`></action></fc><fn=3>%recording-stats%</fn> %trayerpad% " 
    
    -- plugins
    --   Numbers can be automatically colored according to their value. xmobar
@@ -120,7 +120,7 @@ Config {
 
         -- time and date indicator 
         --   (%F = d-m-y date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<fc=COLOR5><fn=1> \xf073 </fn></fc> <fc=COLOR6>%a,%e-%b-%Y %R </fc>" "date" 10
+        , Run Date           "<fc=COLOR5><action=`gsimplecal`><fn=1> \xf073 </fn></action></fc> <fc=COLOR6>%a,%e-%b-%Y %R </fc>" "date" 10
         
         , Run Com "/home/steven/steven_data/coding_time/recording-stats" [] "recording-stats"  10
 

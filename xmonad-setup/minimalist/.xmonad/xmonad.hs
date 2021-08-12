@@ -155,7 +155,7 @@ myFont = "xft:JetBrainsMono Nerd Font:pixelsize=10:Bold:antialias=true"
 s_XPKeymap :: M.Map (KeyMask,KeySym) (XP ())
 s_XPKeymap  = M.fromList $
   map (first $ (,) controlMask) -- control + <key> 0
-  [  (xK_u, killBefore)
+ [  (xK_u, killBefore)
   , (xK_k, killAfter)
   , (xK_a, startOfLine)
   , (xK_e, endOfLine)
@@ -347,23 +347,30 @@ windowCount =
 
 myManageHook = composeAll
     [
-     className =? "Gimp"                -->   doFloat
+      className =? "Gimp"               -->   doFloat
+    , className =? "dialog"             -->   doFloat
+    , className =? "confirm"            -->   doFloat
+    , className =? "download"           -->   doFloat
+    , className =? "file_progress"      -->   doFloat
+    , className =? "notification"       -->   doFloat
+    , className =? "error"              -->   doFloat
     --, resource  =? "desktop_window"   -->   doIgnore
     --, resource  =? "kdesktop"         -->   doIgnore 
     , className =? "xdman-Main"         -->   doFloat
-    , className =? "kitty-panel"              -->   doFloat
-    , className =? "panel"              -->   doFloat
-    , className =? "kitty"              -->   doFloat
+    , className =? "gsimplecal"         -->   doFloat
     , className =? "kitty"              -->   hasBorder False
+    , className =? "mpv"                -->   hasBorder False
     , className =? "Key-mon"            -->   doIgnore 
     , className =? "Key-mon"            -->   hasBorder False 
     ]
    <+>composeOne
    [
      className =? "Pcmanfm"                 -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
-   , className =? "Nitrogen"                 -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
+   , className =? "Nitrogen"                -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
    , className =? "Blueman-manager"         -?>  doCenterFloat  
+   , className =? "Gucharmap"               -?>  doCenterFloat  
    , className =? "Pavucontrol"             -?>  doCenterFloat  
+   , className =? "Lxappearance"            -?>  doCenterFloat  
    , className =? "Nm-connection-editor"    -?>  doCenterFloat  
    , className =? "mpv"                     -?>  doRectFloat $ W.RationalRect (0.1)(0.1)(0.8)(0.8)
   -- , className =? "Spotify"                 -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
@@ -379,7 +386,6 @@ s_HandleEventHook :: Event -> X All
 s_HandleEventHook = dynamicPropertyChange "WM_NAME" (className =? "Spotify" --> floating)
       where floating = customFloating $ W.RationalRect (0.1)(0.1)(0.8)(0.8)
  
-
 
 -------------------------------------------------------------------
 ------                  STATUS BARS & LOGGING                ------               
@@ -476,10 +482,10 @@ s_Keys =
 
   -- Window push back into tiling/float
         , ( "M-t",              withFocused $ windows . W.sink ) -- push from floating windows back to tile
-        , ( "M-C-t",                                   sinkAll ) -- push all floating windows back to tile
+        , ( "M1-C-t",                                   sinkAll ) -- push all floating windows back to tile
         
   -- Layout Toggle
-        --, ("M1-f",             sendMessage (T.Toggle "Floats"))
+--        , ("M-S-f",             sendMessage (T.Toggle "Floats"))
         , ( "M-S-t",              sendMessage (T.Toggle "Tabs") )
         , ( "M-f",                  sendMessage $ Toggle NBFULL ) -- toggle Full noborders
         , ( "M-b",               sendMessage $ Toggle NOBORDERS ) -- toggle noBorders
@@ -544,8 +550,8 @@ main :: IO ()
 main = do
 	xmproc0 <- spawnPipe "xmobar -x 0 /home/steven/.config/xmobar/xmobarrc" 
 	xmproc1 <- spawnPipe "xmobar -x 1 /home/steven/.config/xmobar/xmobarrc2" 
- 	xmonad $  ewmh defaults {
-        logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP  -- $ 
+ 	xmonad $ ewmh $ docks  defaults {
+        logHook =  dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP  -- $ 
 --         wallpaperSetter defWallpaperConf
         {
 --          wallpapers = defWPNames myWorkspaces
@@ -559,7 +565,7 @@ main = do
         , ppSep             =  "<fc=#666666> | </fc>"
        -- , ppExtras        = [windowCount] 
        -- , ppOrder         = \(ws:l:t:ex) -> [ws]++ex++[t]
-        , ppOrder            = \(ws:l:_:_) -> [ws]    
+        , ppOrder            = \(ws:_:_:_) -> [ws]    
         }  
         } `additionalKeysP` s_Keys 
 
@@ -581,9 +587,8 @@ defaults = def {
       -- HOOKS, LAYOUTS
         layoutHook         = myLayout,
         manageHook         = myManageHook <+> manageDocks,
-        handleEventHook    = s_HandleEventHook <+> docksEventHook <+> fullscreenEventHook,
-
-     -- logHook            = myLogHook  ,
+        handleEventHook    = s_HandleEventHook <+> docksEventHook <+> fullscreenEventHook ,
+     --   logHook              = myLogHook , fadeWindowsLogHook, myFadeHook,
      --   logHook            = wallpaperSetter defWallpaperConf { wallpapers = defWPNames myWorkspaces <> WallpaperList [()] }
         startupHook        = myStartupHook
     }

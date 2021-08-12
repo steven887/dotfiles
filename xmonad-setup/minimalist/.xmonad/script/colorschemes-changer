@@ -27,7 +27,7 @@
 # SOFTWARE.
 
 
-IMGDIR=$HOME/steven_data/mywallpaper/
+IMGDIR=$HOME/steven_data/mywallpaper/minimalist/
 
 function COLORCHANGER(){
  WALLPAPER="$(find "$IMGDIR"  -name "*.jpg" -or -name "*.png" | shuf -n1)"
