@@ -27,12 +27,14 @@
 # SOFTWARE.
 
 
-IMGDIR=$HOME/steven_data/mywallpaper/minimalist/
+#IMGDIR=$HOME/steven_data/mywallpaper/minimalist/
+IMGDIR=$HOME/steven_data/mywallpaper
 
 function COLORCHANGER(){
  WALLPAPER="$(find "$IMGDIR"  -name "*.jpg" -or -name "*.png" | shuf -n1)"
  feh --randomize --bg-scale "$WALLPAPER";
  wal -i "$WALLPAPER" -n; 
+ wpg -s "$WALLPAPER" -n;
 
 }
 COLORCHANGER
@@ -101,5 +103,11 @@ sed -e "s/BGC/$background/g" \
       ~/.config/xmobar/parameter-template/xmobarrc2-parameter >  ~/.config/xmobar/xmobarrc2
 }
 
-XICON
+XICON &
+sleep 1 &
+if [ -n "$(pgrep -u $UID -x glava)" ]; then
+    killall glava && echo "$color2" | glava -i
+else
+    echo "$color2" | glava -i
+fi
 xmonad --restart
