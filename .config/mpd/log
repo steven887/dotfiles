@@ -7971,3 +7971,4 @@ Aug 17 20:00 : exception: Failed to decode /home/steven/Downloads/Musics/Playlis
 Aug 17 20:00 : player: played "Playlist/Work From Home/102 - Halsey - You should be sad(Explicit).flac"
 Aug 17 20:00 : exception: Failed to decode /home/steven/Downloads/Musics/Playlist/Work From Home/68 - 5 Seconds Of Summer - Youngblood.flac; Failed to open '/home/steven/Downloads/Musics/Playlist/Work From Home/68 - 5 Seconds Of Summer - Youngblood.flac': No such file or directory
 Aug 17 20:00 : player: played "Playlist/Work From Home/68 - 5 Seconds Of Summer - Youngblood.flac"
+Aug 17 20:07 : player: played "Playlist/Work From Home/08 - Adele - Someone Like You.flac"
