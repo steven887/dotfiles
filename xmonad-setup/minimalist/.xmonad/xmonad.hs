@@ -459,6 +459,7 @@ s_Keys =
          , ( "M-d t",                 spawn "$HOME/mygithub/dmenu-scripts/tv")
          , ( "M-d c",        spawn "$HOME/mygithub/dmenu-scripts/edit-config")
          , ( "M-d s",    spawn "$HOME/mygithub/dmenu-scripts/screen-recorder")
+         , ( "M-c",    spawn "$HOME/colorschemes-changer")
 
   -- Window Section
   -- Kill windows
@@ -550,7 +551,7 @@ main :: IO ()
 main = do
 	xmproc0 <- spawnPipe "xmobar -x 0 /home/steven/.config/xmobar/xmobarrc" 
 	xmproc1 <- spawnPipe "xmobar -x 1 /home/steven/.config/xmobar/xmobarrc2" 
- 	xmonad $ ewmh $ docks  defaults {
+ 	xmonad $ docks $ ewmh   defaults {
         logHook =  dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP  -- $ 
 --         wallpaperSetter defWallpaperConf
         {
