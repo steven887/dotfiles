@@ -28,13 +28,13 @@
 
 
 #IMGDIR=$HOME/steven_data/mywallpaper/minimalist/
-IMGDIR=$HOME/steven_data/mywallpaper
+IMGDIR=$HOME/steven_data/mywallpaper/
 
 function COLORCHANGER(){
  WALLPAPER="$(find "$IMGDIR"  -name "*.jpg" -or -name "*.png" | shuf -n1)"
  feh --randomize --bg-scale "$WALLPAPER";
- wal -i "$WALLPAPER" -n; 
- wpg -s "$WALLPAPER" -n;
+ wal -i "$WALLPAPER"  && wpg -s "$WALLPAPER" -n; 
+ #wpg -s "$WALLPAPER" -n;
 
 }
 COLORCHANGER
@@ -101,6 +101,25 @@ sed -e "s/BGC/$background/g" \
     -e "s/COLOR14/$color14/g" \
     -e "s/COLOR15/$color15/g" \
       ~/.config/xmobar/parameter-template/xmobarrc2-parameter >  ~/.config/xmobar/xmobarrc2
+
+#echo $background
+#echo $foreground
+#echo $color0
+#echo $color1
+#echo $color2
+#echo $color3
+#echo $color4
+#echo $color5
+#echo $color6
+#echo $color7
+#echo $color8
+#echo $color9
+#echo $color10
+#echo $color11
+#echo $color12
+#echo $color13
+#echo $color14
+#echo $color15
 }
 
 XICON &

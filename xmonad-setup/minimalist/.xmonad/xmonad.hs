@@ -222,6 +222,7 @@ xmobarEscape = concatMap doubleLts
 ------------------------------ End Xmobar Escapes ------------------------
 --
 -------------------------- Clickable workspaces --------------------------
+
 myWorkspaces :: [String]
 myWorkspaces = clickable . (map xmobarEscape)
     $ ["\xf10c","\xf10c","\xf10c","\xf10c","\xf10c","\xf10c","\xf10c","\xf10c","\xf10c"]
@@ -348,10 +349,6 @@ windowCount =
 myManageHook = composeAll
     [
       className =? "Gimp"               -->   doFloat
-    , className =? "dialog"             -->   doFloat
-    , className =? "confirm"            -->   doFloat
-    , className =? "download"           -->   doFloat
-    , className =? "file_progress"      -->   doFloat
     , className =? "notification"       -->   doFloat
     , className =? "error"              -->   doFloat
     --, resource  =? "desktop_window"   -->   doIgnore
@@ -369,10 +366,15 @@ myManageHook = composeAll
    , className =? "Nitrogen"                -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
    , className =? "Blueman-manager"         -?>  doCenterFloat  
    , className =? "Gucharmap"               -?>  doCenterFloat  
+   , className =? "zoom"                    -?>  doCenterFloat  
    , className =? "Pavucontrol"             -?>  doCenterFloat  
    , className =? "Lxappearance"            -?>  doCenterFloat  
    , className =? "Nm-connection-editor"    -?>  doCenterFloat  
    , className =? "mpv"                     -?>  doRectFloat $ W.RationalRect (0.1)(0.1)(0.8)(0.8)
+   , className =? "dialog"                  -?>  doCenterFloat
+   , className =? "confirm"                 -?>  doCenterFloat
+   , className =? "download"                -?>  doCenterFloat
+   , className =? "file_progress"           -?>  doCenterFloat
   -- , className =? "Spotify"                 -?>  doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
 --,className =? "xdman-Main"  -?> doRectFloat $ (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2) ) 
    ]
@@ -459,7 +461,7 @@ s_Keys =
          , ( "M-d t",                 spawn "$HOME/mygithub/dmenu-scripts/tv")
          , ( "M-d c",        spawn "$HOME/mygithub/dmenu-scripts/edit-config")
          , ( "M-d s",    spawn "$HOME/mygithub/dmenu-scripts/screen-recorder")
-         , ( "M-c",    spawn "$HOME/colorschemes-changer")
+         , ( "M-c",    spawn "$HOME/.xmonad/script/colorschemes-changer")
 
   -- Window Section
   -- Kill windows
@@ -503,7 +505,7 @@ s_Keys =
 
   -- Media Keys / Extra Keys
 
-    , ("<Print>", spawn "scrot -szf -e ' ~/steven_data/screenshots.sh $f'" )
+    , ("<Print>", spawn "scrot -s -e ' ~/steven_data/screenshots.sh $f'" )
 --    , ("<XF86MonBrightnessUp>",                         spawn "lux -a 10%" )
 --    , ("<XF86MonBrightnessDown>",                       spawn "lux -s 10%" )
    -- , ("<XF86Tools>",          namedScratchpadAction scratchpads "spotify" )
@@ -551,13 +553,14 @@ main :: IO ()
 main = do
 	xmproc0 <- spawnPipe "xmobar -x 0 /home/steven/.config/xmobar/xmobarrc" 
 	xmproc1 <- spawnPipe "xmobar -x 1 /home/steven/.config/xmobar/xmobarrc2" 
- 	xmonad $ docks $ ewmh   defaults {
+ 	xmonad $ ewmh $ docks    defaults {
         logHook =  dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP  -- $ 
 --         wallpaperSetter defWallpaperConf
         {
 --          wallpapers = defWPNames myWorkspaces
 --                    <> WallpaperList [ ("\xf10c", WallpaperDir "1") ]
-          ppOutput          = \x -> hPutStrLn xmproc0 x   >> hPutStrLn xmproc1 x 
+          ppOutput          = \x -> hPutStrLn xmproc0 x   >> hPutStrLn xmproc1 x  -- use this if connect to ext monitor
+        --  ppOutput          = \x -> hPutStrLn xmproc1 x  -- use this if not connect to ext monitor
         , ppCurrent         = xmobarColor color6 "" . \s -> " <fn=2>\61713</fn>" 
         , ppVisible         = xmobarColor color5  "" . \s -> "<fn=2>\xf192</fn>"  
         , ppHidden          = xmobarColor color15 "" 

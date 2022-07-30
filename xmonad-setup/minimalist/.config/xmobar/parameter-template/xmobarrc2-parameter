@@ -26,7 +26,9 @@ Config {
   -- , border        = BottomB
   -- , position      = Top 
   -- , position        = Static { xpos = 0 , ypos = 0, width = 1830, height = 20 }
-   , position        = Static { xpos = 1930 , ypos = 8, width = 1346, height = 21 }
+   , position        = Static { xpos = 1930 , ypos = 8, width = 1346, height = 21 } --# this position if had 2 monitor
+  -- #use position below if not connect to external monitor
+  -- , position        = Static { xpos = 10 , ypos = 8, width = 1306, height = 21 }
    , borderColor     = "#646464"
    , iconRoot        = "/home/steven/.xmonad/xpm" -- default: "."
 
@@ -41,7 +43,7 @@ Config {
    , pickBroadest             = False   -- choose widest display (multi-monitor)
    , persistent               = False    -- enable/disable hiding (True = disabled)
    , template                 = "%date%<fc=#666666>| </fc><action=./colorschemes-changer><fn=3>🎨</fn></action>} <fc=COLOR6>%UnsafeStdinReader%</fc>{ %default:Master%<fc=#666666>|</fc>%battery%<fc=#666666>|</fc>%multicpu%<fc=#666666>|</fc> \
-                                 \ %coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc>" 
+                                 \ %coretemp%<fc=#666666>|</fc>%memory%<fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc> %trayerpad%" 
    
    -- plugins
    --   Numbers can be automatically colored according to their value. xmobar
